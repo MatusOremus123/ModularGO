@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'second_page.dart'; // Import the second page file
+import 'second_page.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Navigate to the next page after 3 seconds
+
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
@@ -14,12 +14,12 @@ class SplashScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: Colors.red, // Background color
+      backgroundColor: Colors.red,
       body: Center(
         child: Image.asset(
-          'assets/MODULAR.png', // Path to your PNG file
-          width: 200, // Adjust the width
-          height: 200, // Adjust the height
+          'assets/MODULAR.png',
+          width: 200,
+          height: 200,
           fit: BoxFit.contain,
         ),
       ),
