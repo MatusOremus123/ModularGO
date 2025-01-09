@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_screen.dart'; // Import the LoginScreen
 
 class BeforeLoginScreen extends StatelessWidget {
   @override
@@ -28,6 +29,17 @@ class BeforeLoginScreen extends StatelessWidget {
             ],
           ),
 
+          // Modular Logo at the Top
+          Positioned(
+            top: 100, // Adjust as needed
+            left: 20, // Align slightly from the left
+            child: Image.asset(
+              'assets/ModularRED.png', // Replace with your logo asset path
+              width: 290, // Adjust width as needed
+              fit: BoxFit.contain,
+            ),
+          ),
+
           // Centered Content
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -55,7 +67,11 @@ class BeforeLoginScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle login logic
+                    // Navigate to LoginScreen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white, // Text color
