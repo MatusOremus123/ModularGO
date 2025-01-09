@@ -12,11 +12,11 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Top Red Section with Text and Logo
+
                   Container(
                     width: double.infinity,
-                    height: 350, // Adjust height as needed
-                    color: Color(0xFFE31C19), // Red background
+                    height: 350,
+                    color: Color(0xFFE31C19),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
@@ -25,12 +25,12 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           // Add the PNG logo
                           Image.asset(
-                            'assets/MODULAR.png', // Replace with your actual PNG asset path
+                            'assets/MODULAR.png',
                             width: 200,
                             height: 100,
                             fit: BoxFit.contain,
                           ),
-                          SizedBox(height: 10), // Reduced spacing to move logo closer to text
+                          SizedBox(height: 10),
                           Text(
                             "Log in with your email address",
                             style: TextStyle(
@@ -56,9 +56,9 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 20), // Reduced spacing to move content closer to the red border
+                        SizedBox(height: 20),
 
-                        // New Text Above Email Input
+
                         Text(
                           "Please enter your email address to receive a one-time code.",
                           style: TextStyle(
@@ -72,30 +72,30 @@ class LoginScreen extends StatelessWidget {
                         TextField(
                           decoration: InputDecoration(
                             labelText: "Email address",
-                            labelStyle: TextStyle(fontSize: 18), // Larger font size for the label
+                            labelStyle: TextStyle(fontSize: 18),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20), // Larger rounded edges
+                              borderRadius: BorderRadius.circular(20),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
-                                color: Colors.grey, // Border color when not focused
+                                color: Colors.grey,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(
-                                color: Colors.black, // Border color when focused
+                                color: Colors.black,
                               ),
                             ),
                             contentPadding: EdgeInsets.symmetric(
-                              vertical: 20, // Increase height
-                              horizontal: 16, // Add horizontal padding
+                              vertical: 20,
+                              horizontal: 16,
                             ),
                           ),
-                          style: TextStyle(fontSize: 20), // Larger input text size
+                          style: TextStyle(fontSize: 20)
                         ),
-                        SizedBox(height: 25), // Reduced spacing
+                        SizedBox(height: 25),
 
                         // Next Button
                         ElevatedButton(
@@ -103,13 +103,13 @@ class LoginScreen extends StatelessWidget {
                             // Handle next logic
                           },
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, // Text color
-                            backgroundColor: Colors.black, // Background color
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20), // Adjustable edges
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 20), // Increase height
-                            minimumSize: Size(double.infinity, 70), // Full-width button with increased height
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            minimumSize: Size(double.infinity, 70),
                           ),
                           child: Center(
                             child: Text(
@@ -121,7 +121,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: 15), // Reduced spacing
+                        SizedBox(height: 15),
 
                         // Alternative Options
                         Align(
@@ -130,13 +130,13 @@ class LoginScreen extends StatelessWidget {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  // Handle login with password
+
                                 },
                                 child: Text(
                                   "Log in with your password",
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.black, // Updated text color to black
+                                    color: Colors.black,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
@@ -151,20 +151,20 @@ class LoginScreen extends StatelessWidget {
                               ),
                               SizedBox(height: 20),
 
-                              // Register Now Button
+
                               ElevatedButton(
                                 onPressed: () {
-                                  // Handle register logic
+
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.black, // Text color
-                                  backgroundColor: Colors.white, // White background
+                                  foregroundColor: Colors.black,
+                                  backgroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20), // Adjustable edges
-                                    side: BorderSide(color: Colors.black), // Black outline
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(color: Colors.black),
                                   ),
-                                  padding: EdgeInsets.symmetric(vertical: 20), // Increase height
-                                  minimumSize: Size(double.infinity, 70), // Full-width button with increased height
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  minimumSize: Size(double.infinity, 70),
                                 ),
                                 child: Center(
                                   child: Text(
