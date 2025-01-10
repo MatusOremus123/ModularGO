@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'register_screen.dart'; // Import the RegisterScreen
+import 'one_time_screen.dart'; // Import the OneTimeCodeScreen
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -99,7 +100,15 @@ class LoginScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 25),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // Navigate to OneTimeCodeScreen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OneTimeCodeScreen(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.black,
