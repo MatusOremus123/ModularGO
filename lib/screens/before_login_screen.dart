@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Import the LoginScreen
+import 'login_screen.dart';
 
 class BeforeLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -13,17 +16,17 @@ class BeforeLoginScreen extends StatelessWidget {
               // Top image
               Container(
                 width: double.infinity,
-                height: 480, // Adjust height for better display
+                height: screenHeight * 0.49,
                 child: Image.asset(
-                  'assets/topPicture.png', // Replace with your image path
+                  'assets/topPicture.png',
                   fit: BoxFit.cover,
                 ),
               ),
 
-              // Remaining space with custom red color
+
               Expanded(
                 child: Container(
-                  color: Color(0xFFE31C19), // Updated background color
+                  color: Color(0xFFE31C19),
                 ),
               ),
             ],
@@ -31,11 +34,11 @@ class BeforeLoginScreen extends StatelessWidget {
 
           // Modular Logo at the Top
           Positioned(
-            top: 100, // Adjust as needed
-            left: 20, // Align slightly from the left
+            top: MediaQuery.of(context).padding.top + 40,
+            left: 20,
             child: Image.asset(
-              'assets/ModularRED.png', // Replace with your logo asset path
-              width: 290, // Adjust width as needed
+              'assets/ModularRED.png',
+              width: 300,
               fit: BoxFit.contain,
             ),
           ),
@@ -50,21 +53,24 @@ class BeforeLoginScreen extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Register for free\nStart order essential\nstationeries now",
+                    "Register for free\nStart ordering essential\nstationeries now",
                     textAlign: TextAlign.left,
                     style: TextStyle(
+                      fontFamily: 'Roboto',
                       color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                      fontSize: screenWidth * 0.07,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: screenHeight * 0.037),
 
               // Log in Button
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.07,
+                ),
                 child: ElevatedButton(
                   onPressed: () {
                     // Navigate to LoginScreen
@@ -74,46 +80,66 @@ class BeforeLoginScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, // Text color
-                    backgroundColor: Color(0xFFE31C19), // Updated background color
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFFE31C19),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20), // Less rounded edges
-                      side: BorderSide(color: Colors.white, width: 2), // White outline
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: Colors.white, width: 1),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 23), // Taller button
-                    minimumSize: Size(double.infinity, 60), // Full-width button
+                    padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.023,
+                    ),
+                    minimumSize: Size(
+                      double.infinity,
+                      screenHeight * 0.07,
+                    ),
                   ),
                   child: Text(
                     "Log in",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: screenWidth * 0.045,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: screenHeight * 0.02),
 
               // Register Button
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.07,
+                ),
                 child: ElevatedButton(
                   onPressed: () {
                     // Handle register logic
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Color(0xFFE31C19), // Updated text color
-                    backgroundColor: Colors.white, // Background color
+                    foregroundColor: Color(0xFFE31C19),
+                    backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20), // Less rounded edges
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 23), // Taller button
-                    minimumSize: Size(double.infinity, 60), // Full-width button
+                    padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.023,
+                    ),
+                    minimumSize: Size(
+                      double.infinity,
+                      screenHeight * 0.07,
+                    ),
                   ),
                   child: Text(
                     "Register",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: screenWidth * 0.045,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: screenHeight * 0.05),
 
               // Bottom Task Bar
               Container(
@@ -146,7 +172,11 @@ class BeforeLoginScreen extends StatelessWidget {
         SizedBox(height: 4),
         Text(
           label,
-          style: TextStyle(color: Colors.grey, fontSize: 12),
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            color: Colors.grey,
+            fontSize: 12,
+          ),
         ),
       ],
     );
