@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
+import 'register_screen.dart';
 
 class BeforeLoginScreen extends StatelessWidget {
   @override
@@ -22,8 +23,6 @@ class BeforeLoginScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-
-
               Expanded(
                 child: Container(
                   color: Color(0xFFE31C19),
@@ -113,7 +112,11 @@ class BeforeLoginScreen extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    // Handle register logic
+                    // Navigate to RegisterScreen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Color(0xFFE31C19),
