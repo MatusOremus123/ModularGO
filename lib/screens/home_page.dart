@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'settings_page.dart'; // Import the SettingsPage
 
 class HomePage extends StatelessWidget {
   @override
@@ -69,7 +70,9 @@ class HomePage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // Handle Overview button press
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
@@ -89,7 +92,15 @@ class HomePage extends StatelessWidget {
                       SizedBox(width: 10),
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // Navigate to SettingsPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SettingsPage(),
+                              ),
+                            );
+                          },
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(color: Colors.black),
                             shape: RoundedRectangleBorder(
