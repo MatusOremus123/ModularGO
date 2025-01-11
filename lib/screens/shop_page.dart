@@ -77,9 +77,9 @@ class ShopPage extends StatelessWidget {
                       _buildSectionTitle('Products near you'),
                       SizedBox(height: 12),
                       _buildHorizontalList([
-                        {'imagePath': 'assets/PenPicture.png', 'name': 'Marker', 'price': '2,75 €'},
-                        {'imagePath': 'assets/Sketchbook.png', 'name': 'Sketchbook', 'price': '3,10 €'},
-                        {'imagePath': 'assets/NotebookNew.png', 'name': 'Notebook', 'price': '2,50 €'},
+                        {'imagePath': 'assets/Maker.png', 'name': 'Marker', 'price': '2,75 €'},
+                        {'imagePath': 'assets/Sketchbook1.png', 'name': 'Sketchbook', 'price': '3,10 €'},
+                        {'imagePath': 'assets/Notebook.png', 'name': 'Notebook', 'price': '2,50 €'},
                       ], screenWidth),
 
                       SizedBox(height: 20),
@@ -87,7 +87,7 @@ class ShopPage extends StatelessWidget {
                       _buildSectionTitle('Vending Machines near you'),
                       SizedBox(height: 10),
                       _buildHorizontalList([
-                        {'imagePath': 'assets/MachinePicture.png', 'name': '001', 'price': ''},
+                        {'imagePath': 'assets/shelf.png', 'name': '001', 'price': ''},
                       ], screenWidth),
 
                       SizedBox(height: 20),
@@ -95,9 +95,9 @@ class ShopPage extends StatelessWidget {
                       _buildSectionTitle('Your former purchase'),
                       SizedBox(height: 18),
                       _buildHorizontalList([
-                        {'imagePath': 'assets/PenPicture.png', 'name': 'Pen', 'price': '1,50 €'},
-                        {'imagePath': 'assets/NotebookNew.png', 'name': 'Notebook', 'price': '2,50 €'},
-                        {'imagePath': 'assets/Sketchbook.png', 'name': 'Sketchbook', 'price': '3,10 €'},
+                        {'imagePath': 'assets/Maker.png', 'name': 'Pen', 'price': '1,50 €'},
+                        {'imagePath': 'assets/Notebook.png', 'name': 'Notebook', 'price': '2,50 €'},
+                        {'imagePath': 'assets/Sketchbook1.png', 'name': 'Sketchbook', 'price': '3,10 €'},
                       ], screenWidth),
                     ],
                   ),
