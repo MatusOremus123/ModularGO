@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'before_login_screen.dart'; // Replace with your actual import
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -55,55 +56,56 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
           ),
-          // Buttons Section
+          // Buttons Section with Overview and Settings buttons added
           Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.04,
-              vertical: screenHeight * 0.02,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             color: Colors.white,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context); // Go back to the HomePage
+                      Navigator.pop(context); // Handle Overview button press
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(21),
-                      ),
-                    ),
-                    child: Text(
-                      "Overview",
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.018,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Roboto',
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.03),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                       ),
+                      padding: EdgeInsets.symmetric(vertical: 19), // Increased height
                     ),
                     child: Text(
-                      "Settings",
+                      'Overview',
                       style: TextStyle(
-                        fontSize: screenHeight * 0.018,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Roboto',
+                        fontSize: 17, // Optional: Adjust font size
+                        color: Colors.white, // Set text color to white
                       ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      // Navigate to SettingsPage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsPage(),
+                        ),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: Colors.black),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(21),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 18), // Increased height
+                    ),
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(color: Colors.black, fontSize: 17), // Optional: Adjust font size
                     ),
                   ),
                 ),
@@ -219,7 +221,12 @@ class SettingsPage extends StatelessWidget {
                 SizedBox(height: 30),
                 Center(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => BeforeLoginScreen()),
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       side: BorderSide(color: Colors.black),
                       shape: RoundedRectangleBorder(
