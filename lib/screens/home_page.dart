@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'settings_page.dart'; // Import the SettingsPage
-
+import 'settings_page.dart';
+import 'shop_page.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,8 @@ class HomePage extends StatelessWidget {
                 // Responsive logo
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    final logoWidth = constraints.maxWidth * 0.55; // Adjust logo width relative to screen width
-                    final logoHeight = logoWidth * 0.235; // Maintain aspect ratio (adjust as needed)
+                    final logoWidth = constraints.maxWidth * 0.55;
+                    final logoHeight = logoWidth * 0.235;
 
                     return Image.asset(
                       'assets/MODULAR.png',
@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.022,
                     color: Colors.white,
-                    fontWeight: FontWeight.w200, // Reduced boldness
+                    fontWeight: FontWeight.w200,
                   ),
                 ),
                 Text(
@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.045,
-                    fontWeight: FontWeight.w300, // Reduced boldness
+                    fontWeight: FontWeight.w300,
                     color: Colors.white,
                   ),
                 ),
@@ -78,13 +78,13 @@ class HomePage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(21),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 19), // Increased height
+                            padding: EdgeInsets.symmetric(vertical: 19),
                           ),
                           child: Text(
                             'Overview',
                             style: TextStyle(
-                              fontSize: 17, // Optional: Adjust font size
-                              color: Colors.white, // Set text color to white
+                              fontSize: 17,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -106,11 +106,11 @@ class HomePage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(21),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 18), // Increased height
+                            padding: EdgeInsets.symmetric(vertical: 18),
                           ),
                           child: Text(
                             'Settings',
-                            style: TextStyle(color: Colors.black, fontSize: 17), // Optional: Adjust font size
+                            style: TextStyle(color: Colors.black, fontSize: 17),
                           ),
                         ),
                       ),
@@ -122,7 +122,7 @@ class HomePage extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: screenHeight * 0.025,
-                      fontWeight: FontWeight.w500, // Reduced boldness
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(height: 20),
@@ -158,35 +158,43 @@ class HomePage extends StatelessWidget {
               icon: Icons.home,
               label: "Home",
               onTap: () {
-                // Navigate to Home Screen
+                // Navigate to ShopPage
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShopPage()),
+                );
               },
             ),
             _buildTaskBarItem(
               icon: Icons.edit,
               label: "Products",
               onTap: () {
-                // Navigate to Products Screen
+                // Handle navigation to Products Screen
               },
             ),
             _buildTaskBarItem(
               icon: Icons.build,
               label: "Machines",
               onTap: () {
-                // Navigate to Machines Screen
+                // Handle navigation to Machines Screen
               },
             ),
             _buildTaskBarItem(
               icon: Icons.shopping_cart,
               label: "Cart",
               onTap: () {
-                // Navigate to Cart Screen
+                // Handle navigation to Cart Screen
               },
             ),
             _buildTaskBarItem(
-              icon: Icons.person,
-              label: "Me",
+              icon: Icons.settings,
+              label: "Settings",
               onTap: () {
-                // Navigate to Profile Screen
+                // Navigate to SettingsPage
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
               },
             ),
           ],
@@ -201,8 +209,8 @@ class HomePage extends StatelessWidget {
     required double screenWidth,
   }) {
     return Container(
-      width: screenWidth * 0.44, // Increased width
-      height: 175, // Increased height for taller boxes
+      width: screenWidth * 0.44,
+      height: 175,
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(21),
@@ -210,11 +218,11 @@ class HomePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 36), // Slightly larger icon
-          SizedBox(height: 12), // Adjusted spacing
+          Icon(icon, size: 36),
+          SizedBox(height: 12),
           Text(
             label,
-            style: TextStyle(fontSize: 18), // Larger font size
+            style: TextStyle(fontSize: 18),
           ),
         ],
       ),

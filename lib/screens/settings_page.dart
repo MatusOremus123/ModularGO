@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'before_login_screen.dart'; // Replace with your actual import
+import 'before_login_screen.dart';
+import 'shop_page.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Updated Header Section from HomePage
+          // Header Section
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
@@ -20,11 +21,10 @@ class SettingsPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: screenHeight * 0.099),
-                // Responsive logo
                 LayoutBuilder(
                   builder: (context, constraints) {
-                    final logoWidth = constraints.maxWidth * 0.55; // Adjust logo width relative to screen width
-                    final logoHeight = logoWidth * 0.235; // Maintain aspect ratio (adjust as needed)
+                    final logoWidth = constraints.maxWidth * 0.55;
+                    final logoHeight = logoWidth * 0.235;
 
                     return Image.asset(
                       'assets/MODULAR.png',
@@ -41,7 +41,7 @@ class SettingsPage extends StatelessWidget {
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.022,
                     color: Colors.white,
-                    fontWeight: FontWeight.w200, // Reduced boldness
+                    fontWeight: FontWeight.w200,
                   ),
                 ),
                 Text(
@@ -49,14 +49,14 @@ class SettingsPage extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.045,
-                    fontWeight: FontWeight.w300, // Reduced boldness
+                    fontWeight: FontWeight.w300,
                     color: Colors.white,
                   ),
                 ),
               ],
             ),
           ),
-          // Buttons Section with Overview and Settings buttons added
+          // Overview and Settings Buttons
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             color: Colors.white,
@@ -66,20 +66,20 @@ class SettingsPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context); // Handle Overview button press
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 19), // Increased height
+                      padding: EdgeInsets.symmetric(vertical: 19),
                     ),
                     child: Text(
                       'Overview',
                       style: TextStyle(
-                        fontSize: 17, // Optional: Adjust font size
-                        color: Colors.white, // Set text color to white
+                        fontSize: 17,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -88,7 +88,6 @@ class SettingsPage extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // Navigate to SettingsPage
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -101,11 +100,11 @@ class SettingsPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(21),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 18), // Increased height
+                      padding: EdgeInsets.symmetric(vertical: 18),
                     ),
                     child: Text(
                       'Settings',
-                      style: TextStyle(color: Colors.black, fontSize: 17), // Optional: Adjust font size
+                      style: TextStyle(color: Colors.black, fontSize: 17),
                     ),
                   ),
                 ),
@@ -253,7 +252,10 @@ class SettingsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildTaskBarItem(Icons.home, "Home", () {
-              Navigator.pop(context); // Go back to Home
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ShopPage()),
+              );
             }),
             _buildTaskBarItem(Icons.edit, "Products", () {}),
             _buildTaskBarItem(Icons.build, "Machines", () {}),
