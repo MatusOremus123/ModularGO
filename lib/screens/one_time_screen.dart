@@ -21,7 +21,7 @@ class OneTimeCodeScreen extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: screenWidth * 0.04, // Adjust padding dynamically
-                        vertical: screenHeight * 0.02,
+                        vertical: screenHeight * 0.03,
                       ),
                       child: Stack(
                         children: [

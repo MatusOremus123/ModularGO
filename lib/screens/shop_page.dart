@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
-import 'product_page.dart';
 
 class ShopPage extends StatelessWidget {
   @override
@@ -9,7 +8,7 @@ class ShopPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return WillPopScope(
-      onWillPop: () async => false, // Disable the back button and swipe
+      onWillPop: () async => false,
       child: Scaffold(
         body: Column(
           children: [
@@ -17,16 +16,16 @@ class ShopPage extends StatelessWidget {
             Container(
               color: Color(0xFFE31C19),
               width: screenWidth,
-              height: screenHeight * 0.2, // Adjust header height
+              height: screenHeight * 0.2,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: screenHeight * 0.09), // Space for status bar
+                  SizedBox(height: screenHeight * 0.09),
                   // PNG Logo
                   Image.asset(
-                    'assets/MODULAR.png', // Replace with your PNG path
-                    height: screenHeight * 0.05, // Adjust size as needed
+                    'assets/MODULAR.png',
+                    height: screenHeight * 0.05,
                     fit: BoxFit.contain,
                   ),
                   SizedBox(height: 5),
@@ -128,10 +127,7 @@ class ShopPage extends StatelessWidget {
                 icon: Icons.edit,
                 label: "Products",
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProductPage()),
-                  );
+                  // Handle Products navigation
                 },
               ),
               _buildTaskBarItem(
@@ -211,14 +207,14 @@ class ShopPage extends StatelessWidget {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(21),
                     image: DecorationImage(
-                      image: AssetImage(item['imagePath']!), // Replace with PNG
+                      image: AssetImage(item['imagePath']!),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  item['name']!, // Product name
+                  item['name']!,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -226,7 +222,7 @@ class ShopPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  item['price']!, // Product price
+                  item['price']!,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[700],
