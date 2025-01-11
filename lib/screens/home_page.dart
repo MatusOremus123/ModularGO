@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'settings_page.dart'; // Import the SettingsPage
-import 'shop_page.dart'; // Import the ShopPage
+import 'settings_page.dart';
+import 'shop_page.dart';
+import 'product_page.dart'; // Import ProductPage
 
 class HomePage extends StatelessWidget {
   @override
@@ -170,7 +171,11 @@ class HomePage extends StatelessWidget {
               icon: Icons.edit,
               label: "Products",
               onTap: () {
-                // Handle navigation to Products Screen
+                // Navigate to ProductPage
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductPage()),
+                );
               },
             ),
             _buildTaskBarItem(
