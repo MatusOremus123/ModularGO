@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'VerificationScreen.dart'; // Import the VerificationScreen
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -28,7 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: screenHeight * 0.05),
                 Row(
                   children: [
-                    // Logo Image aligned to the left
                     Image.asset(
                       'assets/MODULAR.png',
                       height: screenHeight * 0.037,
@@ -79,7 +79,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   children: [
                     SizedBox(height: 20),
-                    // Fields
                     TextField(
                       decoration: InputDecoration(
                         labelText: 'First name',
@@ -158,9 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             child: Text.rich(
                               TextSpan(
                                 text: "I hereby agree to the ",
@@ -185,7 +182,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ElevatedButton(
                       onPressed: isChecked
                           ? () {
-
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VerificationScreen(),
+                          ),
+                        );
                       }
                           : null,
                       style: ElevatedButton.styleFrom(
@@ -207,7 +209,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
-
                     Column(
                       children: [
                         Text(
@@ -215,9 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: TextStyle(fontSize: 12),
                         ),
                         GestureDetector(
-                          onTap: () {
-
-                          },
+                          onTap: () {},
                           child: Text(
                             "Cookie Policy and Privacy Policy",
                             style: TextStyle(
