@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart'; // Import the new page
 
 class VerificationScreen extends StatefulWidget {
   @override
@@ -22,18 +23,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
-            height: screenHeight * 0.37,
+            height: screenHeight * 0.34,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 19),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.08),
+                SizedBox(height: screenHeight * 0.04),
                 Row(
                   children: [
                     // Replace "modulor go" text with a PNG image
                     Image.asset(
                       'assets/MODULAR.png', // Replace with your actual asset path
-                      height: screenHeight * 0.035,
+                      height: screenHeight * 0.039,
                     ),
                     Spacer(),
                     IconButton(
@@ -49,8 +50,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   "Enter the verification code",
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: screenHeight * 0.035,
-                    fontWeight: FontWeight.w500,
+                    fontSize: screenHeight * 0.039,
+                    fontWeight: FontWeight.w400,
                     color: Colors.white,
                   ),
                 ),
@@ -60,7 +61,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.02,
-                    fontWeight: FontWeight.w400, // Regular weight
+                    fontWeight: FontWeight.w300, // Regular weight
                     color: Colors.white,
                   ),
                 ),
@@ -129,8 +130,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     // Create Profile Button
                     ElevatedButton(
                       onPressed: () {
-                        // TODO: Implement verification logic
-                        Navigator.pushReplacementNamed(context, '/nextScreen');
+                        // Navigate to HomePage
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
