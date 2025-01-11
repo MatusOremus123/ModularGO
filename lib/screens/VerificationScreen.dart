@@ -22,22 +22,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
-            height: screenHeight * 0.3,
+            height: screenHeight * 0.37,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 19),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: screenHeight * 0.08),
                 Row(
                   children: [
-                    // Logo
-                    Text(
-                      "modulor go",
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.03,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    // Replace "modulor go" text with a PNG image
+                    Image.asset(
+                      'assets/MODULAR.png', // Replace with your actual asset path
+                      height: screenHeight * 0.035,
                     ),
                     Spacer(),
                     IconButton(
@@ -48,13 +44,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: screenHeight * 0.01),
                 Text(
                   "Enter the verification code",
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.035,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),
                 ),
@@ -64,6 +60,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.02,
+                    fontWeight: FontWeight.w400, // Regular weight
                     color: Colors.white,
                   ),
                 ),
@@ -78,7 +75,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 20),
+                    SizedBox(height: 40),
                     // Email Input
                     TextField(
                       controller: emailController,
@@ -89,7 +86,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 25),
                     // Code Input Fields
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,7 +118,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         },
                         child: Text(
                           "Send a new code",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400, // Regular weight
+                          ),
                         ),
                       ),
                     ),
@@ -134,7 +134,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: EdgeInsets.symmetric(vertical: 25),
                         minimumSize: Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(21),
@@ -145,7 +145,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         style: TextStyle(
                           fontFamily: 'Roboto',
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500, // Medium weight
                           color: Colors.white,
                         ),
                       ),
@@ -166,6 +166,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             "Cookie Policy and Privacy Policy",
                             style: TextStyle(
                               fontSize: 12,
+                              fontWeight: FontWeight.w400, // Regular weight
                               color: Colors.black,
                               decoration: TextDecoration.underline,
                             ),
