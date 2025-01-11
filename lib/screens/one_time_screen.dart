@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart'; // Import your HomePage class
 
 class OneTimeCodeScreen extends StatelessWidget {
   @override
@@ -130,7 +131,11 @@ class OneTimeCodeScreen extends StatelessWidget {
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            // Handle log in logic
+                            // Navigate to HomePage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity, 64),
