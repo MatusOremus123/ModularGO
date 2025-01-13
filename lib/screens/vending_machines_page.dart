@@ -1,25 +1,37 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-
+class VendingMachinesPage extends StatelessWidget {
   final double bottomImageWidth = 250.0;
   final double bottomImageHeight = 70.0;
+
+
+  Widget _buildTaskBarItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 28,
+            color: Colors.grey,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,29 +41,26 @@ class HomePage extends StatelessWidget {
         child: AppBar(
           backgroundColor: Colors.red,
           elevation: 0,
+          automaticallyImplyLeading: false,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-            ],
+            children: [],
           ),
           flexibleSpace: Stack(
             children: [
-
               Positioned(
-                top: 85,
+                top: 35,
                 left: 6,
                 child: Image.asset(
                   'assets/LOGO.png',
-                  height: 50,
-                  width: 150,
+                  height: 60,
+                  width: 180,
                   errorBuilder: (context, error, stackTrace) {
                     return const Text('Image failed to load');
                   },
                 ),
               ),
-
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -70,7 +79,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-
           Container(
             height: 200,
             width: double.infinity,
@@ -81,15 +89,13 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20), // Spacer
-
+          const SizedBox(height: 20),
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 const Text(
                   'Vending Machines near you',
                   style: TextStyle(
@@ -97,20 +103,24 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
 
-                Image.asset(
-                  'assets/Close Button.png',
-                  height: 24,
-                  width: 24,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Text('Image failed to load');
+                    Navigator.pop(context);
                   },
+                  child: Image.asset(
+                    'assets/Close Button.png',
+                    height: 24,
+                    width: 24,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Text('Image failed to load');
+                    },
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 10),
-
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -127,7 +137,6 @@ class HomePage extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0, right: 10.0),
                       child: Align(
@@ -142,7 +151,6 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     Positioned(
                       bottom: 10,
                       left: 10,
@@ -156,7 +164,6 @@ class HomePage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-
                           const Text(
                             'Development Lab',
                             style: TextStyle(
@@ -175,11 +182,47 @@ class HomePage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: Container(
-        height: bottomImageHeight,
-        width: bottomImageWidth,
-        child: Image.asset(
-          'assets/Frame 4.png',
-
+        height: 80,
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildTaskBarItem(
+              icon: Icons.home,
+              label: "Home",
+              onTap: () {
+                // Handle Home tap
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.edit,
+              label: "Products",
+              onTap: () {
+                // Handle Products tap
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.build,
+              label: "Machines",
+              onTap: () {
+                // Handle Machines tap
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.shopping_cart,
+              label: "Cart",
+              onTap: () {
+                // Handle Cart tap
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.person,
+              label: "Me",
+              onTap: () {
+                // Handle Me tap
+              },
+            ),
+          ],
         ),
       ),
     );
