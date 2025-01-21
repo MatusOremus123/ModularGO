@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'shop_page.dart';
 import 'product_page.dart';
-import 'home_page.dart';
+import 'home_page.dart'; //something
 
 class VendingMachinesPage extends StatelessWidget {
   final double bottomImageWidth = 250.0;
