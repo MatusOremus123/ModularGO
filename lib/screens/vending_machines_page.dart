@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'shop_page.dart';
+import 'product_page.dart';
+import 'home_page.dart';
 
 class VendingMachinesPage extends StatelessWidget {
   final double bottomImageWidth = 250.0;
   final double bottomImageHeight = 70.0;
-
 
   Widget _buildTaskBarItem({
     required IconData icon,
@@ -54,7 +56,7 @@ class VendingMachinesPage extends StatelessWidget {
                 left: 6,
                 child: Image.asset(
                   'assets/LOGO.png',
-                  height: 60,
+                  height: 140,
                   width: 180,
                   errorBuilder: (context, error, stackTrace) {
                     return const Text('Image failed to load');
@@ -90,7 +92,6 @@ class VendingMachinesPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
@@ -105,7 +106,6 @@ class VendingMachinesPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-
                     Navigator.pop(context);
                   },
                   child: Image.asset(
@@ -121,7 +121,6 @@ class VendingMachinesPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
@@ -191,14 +190,20 @@ class VendingMachinesPage extends StatelessWidget {
               icon: Icons.home,
               label: "Home",
               onTap: () {
-                // Handle Home tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShopPage()),
+                );
               },
             ),
             _buildTaskBarItem(
               icon: Icons.edit,
               label: "Products",
               onTap: () {
-                // Handle Products tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductPage()),
+                );
               },
             ),
             _buildTaskBarItem(
@@ -219,7 +224,10 @@ class VendingMachinesPage extends StatelessWidget {
               icon: Icons.person,
               label: "Me",
               onTap: () {
-                // Handle Me tap
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()), // Navigate to HomePage
+                );
               },
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'shop_page.dart'; // Import your ShopPage
-import 'home_page.dart'; // Import your HomePage
+import 'shop_page.dart';
+import 'home_page.dart';
+import 'vending_machines_page.dart';
 
 class ProductPage extends StatelessWidget {
   @override
@@ -178,7 +179,6 @@ class ProductPage extends StatelessWidget {
                 icon: Icons.home,
                 label: "Home",
                 onTap: () {
-                  // Navigate to ShopPage
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ShopPage()),
@@ -196,7 +196,10 @@ class ProductPage extends StatelessWidget {
                 icon: Icons.build,
                 label: "Machines",
                 onTap: () {
-                  // Handle Machines navigation
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VendingMachinesPage()),
+                  );
                 },
               ),
               _buildTaskBarItem(
@@ -210,7 +213,6 @@ class ProductPage extends StatelessWidget {
                 icon: Icons.person,
                 label: "Me",
                 onTap: () {
-                  // Navigate to HomePage
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage()),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'settings_page.dart';
 import 'shop_page.dart';
-import 'product_page.dart'; // Import ProductPage
+import 'product_page.dart';
+import 'vending_machines_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -182,7 +183,11 @@ class HomePage extends StatelessWidget {
               icon: Icons.build,
               label: "Machines",
               onTap: () {
-                // Handle navigation to Machines Screen
+                // Navigate to VendingMachinesPage
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => VendingMachinesPage()),
+                );
               },
             ),
             _buildTaskBarItem(
