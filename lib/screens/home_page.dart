@@ -3,6 +3,7 @@ import 'settings_page.dart';
 import 'shop_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
+import 'cart_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -194,7 +195,11 @@ class HomePage extends StatelessWidget {
               icon: Icons.shopping_cart,
               label: "Cart",
               onTap: () {
-                // Handle navigation to Cart Screen
+                // Navigate to CartPage
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartPage()),
+                );
               },
             ),
             _buildTaskBarItem(
