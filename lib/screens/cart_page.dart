@@ -3,6 +3,7 @@ import 'shop_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
 import 'settings_page.dart';
+import 'check_out_page.dart'; // Import the CheckOutPage
 
 class CartPage extends StatelessWidget {
   @override
@@ -15,24 +16,20 @@ class CartPage extends StatelessWidget {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Image for modular PNG
                 Image.asset(
                   'assets/MODULAR.png',
-                  height: 30, // Adjust height as needed
+                  height: 30,
                 ),
                 SizedBox(width: 10),
-                // Text "SRH New Campus"
                 Text(
                   'SRH New Campus',
                   style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
               ],
             ),
-            // Text "001"
             Text(
               '001',
               style: TextStyle(
@@ -41,12 +38,10 @@ class CartPage extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            // Text "Development Lab"
             Text(
               'Development Lab',
               style: TextStyle(fontSize: 16, color: Colors.black),
             ),
-            // "Switch machines" link
             GestureDetector(
               onTap: () {
                 // Handle "Switch machines" tap
@@ -77,20 +72,6 @@ class CartPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Removed the text from here
-                  ],
-                ),
-              ],
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
@@ -243,7 +224,6 @@ class CartPage extends StatelessWidget {
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Total amount container
           Container(
             height: 80,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -259,7 +239,10 @@ class CartPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle Checkout
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CheckOutPage()),
+                    );
                   },
                   child: Text('Check Out'),
                   style: ElevatedButton.styleFrom(
@@ -272,7 +255,7 @@ class CartPage extends StatelessWidget {
           ),
           Divider(height: 0, thickness: 1),
           Container(
-            height: 80, // Increased height for the task bar
+            height: 80,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -281,7 +264,6 @@ class CartPage extends StatelessWidget {
                   icon: Icons.home,
                   label: "Home",
                   onTap: () {
-                    // Navigate to ShopPage
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => ShopPage()),
@@ -292,7 +274,6 @@ class CartPage extends StatelessWidget {
                   icon: Icons.edit,
                   label: "Products",
                   onTap: () {
-                    // Navigate to ProductPage
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => ProductPage()),
@@ -303,7 +284,6 @@ class CartPage extends StatelessWidget {
                   icon: Icons.build,
                   label: "Machines",
                   onTap: () {
-                    // Navigate to VendingMachinesPage
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -322,7 +302,6 @@ class CartPage extends StatelessWidget {
                   icon: Icons.settings,
                   label: "Settings",
                   onTap: () {
-                    // Navigate to SettingsPage
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => SettingsPage()),
