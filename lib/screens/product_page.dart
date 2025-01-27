@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'shop_page.dart';
 import 'home_page.dart';
 import 'vending_machines_page.dart';
+import 'ProductDetailsPage.dart'; // Import the new details page
 
 class ProductPage extends StatelessWidget {
   @override
@@ -139,27 +140,41 @@ class ProductPage extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     final product = products[index];
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          product['image'] ?? '',
-                          height: screenHeight * 0.1,
-                          fit: BoxFit.contain,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          product['name'] ?? 'Unknown',
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          product['price'] ?? '€0.00',
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetailsPage(
+                              productName: product['name'] ?? 'Unknown',
+                              productImage: product['image'] ?? '',
+                              productPrice: product['price'] ?? '€0.00',
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            product['image'] ?? '',
+                            height: screenHeight * 0.1,
+                            fit: BoxFit.contain,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            product['name'] ?? 'Unknown',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            product['price'] ?? '€0.00',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
