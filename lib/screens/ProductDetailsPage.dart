@@ -1,220 +1,168 @@
 import 'package:flutter/material.dart';
 
-class ProductDetailsPage extends StatefulWidget {
+class ProductInfoPage extends StatefulWidget {
   final String productName;
   final String productImage;
-  final String productPrice;
+  final double productPrice;
 
-  ProductDetailsPage({
+  const ProductInfoPage({
     required this.productName,
     required this.productImage,
     required this.productPrice,
   });
 
   @override
-  _ProductDetailsPageState createState() => _ProductDetailsPageState();
+  _ProductInfoPageState createState() => _ProductInfoPageState();
 }
 
-class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  String? selectedColor;
+class _ProductInfoPageState extends State<ProductInfoPage> {
   int quantity = 1;
+  String selectedColor = "";
 
-  final List<String> colors = [
-    'blau',
-    'braun',
-    'gelb',
-    'grün',
-    'orange',
-    'rosa',
-    'rot',
-    'schwarz',
-    'violett',
-  ];
+  void _incrementQuantity() {
+    setState(() {
+      quantity++;
+    });
+  }
+
+  void _decrementQuantity() {
+    if (quantity > 1) {
+      setState(() {
+        quantity--;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final List<String> colors = [
+      'Blau',
+      'Braun',
+      'Gelb',
+      'Grün',
+      'Orange',
+      'Rosa',
+      'Rot',
+      'Schwarz',
+      'Violett',
+    ];
+
     return Scaffold(
-      body: Column(
-        children: [
-          // Header Section
-          Container(
-            color: Color(0xFFFFC107),
-            width: screenWidth,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(
+        title: Text(widget.productName),
+        backgroundColor: const Color(0xFFFFC107), // Yellow color
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // Product Image
+            Image.asset(
+              widget.productImage,
+              height: screenHeight * 0.3,
+              fit: BoxFit.contain,
+            ),
+
+            const SizedBox(height: 20),
+
+            // Product Details
+            Text(
+              widget.productName,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 10),
+
+            // Color Options
+            Wrap(
+              spacing: 10,
+              children: colors.map((color) {
+                return ChoiceChip(
+                  label: Text(color),
+                  selected: selectedColor == color,
+                  onSelected: (selected) {
+                    setState(() {
+                      selectedColor = selected ? color : "";
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Price and Quantity - Aligned in the same Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(height: screenHeight * 0.065),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          'assets/MODULAR.png',
-                          height: screenHeight * 0.027,
-                          fit: BoxFit.contain,
-                        ),
-                        SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            'SRH New Campus >',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: screenHeight * 0.018,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
+                // Total Price with Expanded to make sure the quantity controls stay to the right
+                Expanded(
+                  child: Text(
+                    '€${(widget.productPrice * quantity).toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Icon(Icons.search, size: screenHeight * 0.05),
+                  ),
+                ),
+
+                // Quantity Controls
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: _decrementQuantity,
+                      icon: const Icon(Icons.remove),
+                    ),
+                    Text(
+                      '$quantity',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    IconButton(
+                      onPressed: _incrementQuantity,
+                      icon: const Icon(Icons.add),
+                    ),
                   ],
                 ),
               ],
             ),
-          ),
 
-          // Product Image and Details Section
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Product Image
-                    Center(
-                      child: Image.asset(
-                        widget.productImage,
-                        height: screenHeight * 0.3,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-                    // Product Name and Description
-                    Text(
-                      widget.productName,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+            // Add to Cart and Buy Now Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
                     ),
-                    SizedBox(height: 8),
-                    Text(
-                      "Sakura's Micron Pigma pen",
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    SizedBox(height: 16),
-
-                    // Features
-                    Text(
-                      "\u2022 Archival ink, permanent, lightfast\n" +
-                          "\u2022 For legal documents, logbooks, checks, ...\n" +
-                          "\u2022 Pigment-based, does not bleed\n" +
-                          "\u2022 Not erasable, not correctable\n" +
-                          "\u2022 Many line widths and colors",
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
-                    ),
-                    SizedBox(height: 16),
-
-                    // Color Selection
-                    Text(
-                      "Please select a color to continue",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: colors.map((color) {
-                        return ChoiceChip(
-                          label: Text(color),
-                          selected: selectedColor == color,
-                          onSelected: (isSelected) {
-                            setState(() {
-                              selectedColor = isSelected ? color : null;
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 16),
-
-                    // Price and Quantity
-                    if (selectedColor != null) ...[
-                      Text(
-                        widget.productPrice,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              if (quantity > 1) {
-                                setState(() {
-                                  quantity--;
-                                });
-                              }
-                            },
-                            icon: Icon(Icons.remove),
-                          ),
-                          Text(
-                            quantity.toString(),
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                quantity++;
-                              });
-                            },
-                            icon: Icon(Icons.add),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ],
+                    onPressed: () {
+                      // Handle add to cart
+                    },
+                    child: const Text('Add to Cart'),
+                  ),
                 ),
-              ),
-            ),
-          ),
-
-          // Bottom Buttons
-          if (selectedColor != null)
-            Container(
-              padding: EdgeInsets.all(16),
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFFC107),
+                      foregroundColor: Colors.black,
+                    ),
                     onPressed: () {
-                      // Add to Cart Logic
+                      // Handle buy now
                     },
-                    child: Text("Add to Cart"),
+                    child: const Text('Buy Now'),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Buy Now Logic
-                    },
-                    child: Text("Buy Now"),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

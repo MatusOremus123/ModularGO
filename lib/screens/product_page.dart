@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'shop_page.dart';
 import 'home_page.dart';
 import 'vending_machines_page.dart';
-import 'ProductDetailsPage.dart'; // Import the new details page
+import 'ProductDetailsPage.dart';
 
 class ProductPage extends StatelessWidget {
   @override
@@ -145,10 +145,10 @@ class ProductPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProductDetailsPage(
+                            builder: (context) => ProductInfoPage(
                               productName: product['name'] ?? 'Unknown',
                               productImage: product['image'] ?? '',
-                              productPrice: product['price'] ?? '€0.00',
+                              productPrice: double.tryParse(product['price']?.replaceAll('€', '') ?? '0.0') ?? 0.0,
                             ),
                           ),
                         );
