@@ -11,18 +11,78 @@ class ProductPage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     final List<Map<String, String>> products = [
-      {'image': 'assets/Sketchbook.png', 'name': 'Sketchbook', 'price': '€3.10'},
-      {'image': 'assets/Maker.png', 'name': 'Marker', 'price': '€2.75'},
-      {'image': 'assets/Notebook.png', 'name': 'Notebook', 'price': '€9.50'},
-      {'image': 'assets/SketchPen.png', 'name': 'Sketch Pen', 'price': '€3.30'},
-      {'image': 'assets/PaperRolls.png', 'name': 'Paper Rolls', 'price': '€7.90'},
-      {'image': 'assets/ColorPaper.png', 'name': 'Color Paper', 'price': '€2.50'},
-      {'image': 'assets/BallpointPen.png', 'name': 'Ballpoint Pen', 'price': '€1.20'},
-      {'image': 'assets/Ruler.png', 'name': 'Ruler', 'price': '€0.90'},
-      {'image': 'assets/Cutter.png', 'name': 'Cutter', 'price': '€4.50'},
-      {'image': 'assets/Tape.png', 'name': 'Tape', 'price': '€1.00'},
-      {'image': 'assets/CuttingMat.png', 'name': 'Cutting Mat', 'price': '€12.00'},
-      {'image': 'assets/MechanicalPencil.png', 'name': 'Mechanical Pencil', 'price': '€3.80'},
+      {
+        'image': 'assets/Sketchbook.png',
+        'name': 'Sketchbook',
+        'price': '€3.10',
+        'description': 'A perfect sketchbook for artists and designers.',
+      },
+      {
+        'image': 'assets/Maker.png',
+        'name': 'Marker',
+        'price': '€2.75',
+        'description': 'High-quality markers for professional use.',
+      },
+      {
+        'image': 'assets/Notebook.png',
+        'name': 'Notebook',
+        'price': '€9.50',
+        'description': 'Durable notebook with smooth paper for all your notes.',
+      },
+      {
+        'image': 'assets/SketchPen.png',
+        'name': 'Sketch Pen',
+        'price': '€3.30',
+        'description': 'Vibrant sketch pens perfect for creative illustrations.',
+      },
+      {
+        'image': 'assets/PaperRolls.png',
+        'name': 'Paper Rolls',
+        'price': '€7.90',
+        'description': 'High-quality paper rolls for drafting and crafts.',
+      },
+      {
+        'image': 'assets/ColorPaper.png',
+        'name': 'Color Paper',
+        'price': '€2.50',
+        'description': 'Bright and colorful papers for creative projects.',
+      },
+      {
+        'image': 'assets/BallpointPen.png',
+        'name': 'Ballpoint Pen',
+        'price': '€1.20',
+        'description': 'Smooth and reliable ballpoint pens.',
+      },
+      {
+        'image': 'assets/Ruler.png',
+        'name': 'Ruler',
+        'price': '€0.90',
+        'description': 'Sturdy ruler for accurate measurements.',
+      },
+      {
+        'image': 'assets/Cutter.png',
+        'name': 'Cutter',
+        'price': '€4.50',
+        'description': 'Sharp and safe cutter for all cutting needs.',
+      },
+      {
+        'image': 'assets/Tape.png',
+        'name': 'Tape',
+        'price': '€1.00',
+        'description': 'Durable adhesive tape for various uses.',
+      },
+      {
+        'image': 'assets/CuttingMat.png',
+        'name': 'Cutting Mat',
+        'price': '€12.00',
+        'description': 'Protective cutting mat for craft and design work.',
+      },
+      {
+        'image': 'assets/MechanicalPencil.png',
+        'name': 'Mechanical Pencil',
+        'price': '€3.80',
+        'description': 'Premium mechanical pencil for precision writing.',
+      },
     ];
 
     return WillPopScope(
@@ -149,6 +209,7 @@ class ProductPage extends StatelessWidget {
                               productName: product['name'] ?? 'Unknown',
                               productImage: product['image'] ?? '',
                               productPrice: double.tryParse(product['price']?.replaceAll('€', '') ?? '0.0') ?? 0.0,
+                              productDescription: product['description'] ?? '',
                             ),
                           ),
                         );

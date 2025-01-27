@@ -4,11 +4,13 @@ class ProductInfoPage extends StatefulWidget {
   final String productName;
   final String productImage;
   final double productPrice;
+  final String productDescription;  // Added description
 
   const ProductInfoPage({
     required this.productName,
     required this.productImage,
     required this.productPrice,
+    required this.productDescription,  // Added description
   });
 
   @override
@@ -75,6 +77,15 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
             ),
 
             const SizedBox(height: 10),
+
+            // Product Description
+            Text(
+              widget.productDescription,  // Display the description here
+              style: const TextStyle(fontSize: 16, color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 20),
 
             // Color Options
             Wrap(
