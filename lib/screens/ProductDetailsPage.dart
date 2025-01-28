@@ -73,7 +73,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.productName),
-        backgroundColor: const Color(0xFFE31C19), // Red color
+        backgroundColor: const Color(0xFFFFC107),
       ),
       body: Column(
         children: [
@@ -82,7 +82,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
             padding: const EdgeInsets.all(16.0),
             child: Image.asset(
               widget.productImage,
-              height: screenHeight * 0.26,
+              height: screenHeight * 0.22,
               fit: BoxFit.contain,
             ),
           ),

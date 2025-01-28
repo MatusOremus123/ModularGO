@@ -3,7 +3,7 @@ import 'shop_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
 import 'settings_page.dart';
-import 'check_out_page.dart'; // Import the CheckOutPage
+import 'check_out_page.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -50,7 +50,7 @@ class CartPage extends StatelessWidget {
                 'Switch machines >',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: Colors.black,
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -159,7 +159,7 @@ class CartPage extends StatelessWidget {
                                   'Details',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.blue,
+                                    color: Colors.black,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
