@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
+import 'shop_page.dart';
+import 'vending_machines_page.dart';
 
 class ProductInfoPage extends StatefulWidget {
   final String productName;
   final String productImage;
   final double productPrice;
-  final String productDescription;  // Added description
+  final String productDescription;
 
   const ProductInfoPage({
     required this.productName,
     required this.productImage,
     required this.productPrice,
-    required this.productDescription,  // Added description
+    required this.productDescription,
   });
 
   @override
@@ -35,142 +38,245 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
     }
   }
 
+  Widget _buildTaskBarItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.grey),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(
+              fontFamily: 'Roboto',
+              color: Colors.grey,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
     final List<String> colors = [
-      'Blau',
-      'Braun',
-      'Gelb',
-      'Grün',
-      'Orange',
-      'Rosa',
-      'Rot',
-      'Schwarz',
-      'Violett',
+      'Blau', 'Braun', 'Gelb', 'Grün', 'Orange', 'Rosa', 'Rot', 'Schwarz', 'Violett'
     ];
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.productName),
-        backgroundColor: const Color(0xFFFFC107), // Yellow color
+        backgroundColor: const Color(0xFFE31C19), // Red color
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Product Image
-            Image.asset(
+      body: Column(
+        children: [
+          // Product Image
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Image.asset(
               widget.productImage,
-              height: screenHeight * 0.3,
+              height: screenHeight * 0.26,
               fit: BoxFit.contain,
             ),
+          ),
 
-            const SizedBox(height: 20),
+          const SizedBox(height: 10),
 
-            // Product Details
-            Text(
-              widget.productName,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+          // Product Details
+          Text(
+            widget.productName,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
 
-            const SizedBox(height: 10),
+          const SizedBox(height: 10),
 
-            // Product Description
-            Text(
-              widget.productDescription,  // Display the description here
+          // Product Description
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              widget.productDescription,
               style: const TextStyle(fontSize: 16, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
+          ),
 
-            const SizedBox(height: 20),
+          const SizedBox(height: 10),
 
-            // Color Options
-            Wrap(
-              spacing: 10,
-              children: colors.map((color) {
-                return ChoiceChip(
-                  label: Text(color),
-                  selected: selectedColor == color,
-                  onSelected: (selected) {
-                    setState(() {
-                      selectedColor = selected ? color : "";
-                    });
-                  },
-                );
-              }).toList(),
-            ),
 
-            const SizedBox(height: 20),
-
-            // Price and Quantity - Aligned in the same Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Total Price with Expanded to make sure the quantity controls stay to the right
-                Expanded(
-                  child: Text(
-                    '€${(widget.productPrice * quantity).toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-
-                // Quantity Controls
-                Row(
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    IconButton(
-                      onPressed: _decrementQuantity,
-                      icon: const Icon(Icons.remove),
+                    const Text(
+                      "PLEASE SELECT A SPECIFICATION OR COLOR TO CONTINUE",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    Text(
-                      '$quantity',
-                      style: const TextStyle(fontSize: 20),
+                    const SizedBox(height: 10),
+
+                    // Color Options
+                    Wrap(
+                      spacing: 11,
+                      runSpacing: 8,
+                      children: colors.map((color) {
+                        return ChoiceChip(
+                          label: Text(color),
+                          selected: selectedColor == color,
+                          onSelected: (selected) {
+                            setState(() {
+                              selectedColor = selected ? color : "";
+                            });
+                          },
+                        );
+                      }).toList(),
                     ),
-                    IconButton(
-                      onPressed: _incrementQuantity,
-                      icon: const Icon(Icons.add),
+
+                    const SizedBox(height: 20),
+
+                    // Price and Quantity
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '€${(widget.productPrice * quantity).toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: _decrementQuantity,
+                              icon: const Icon(Icons.remove),
+                            ),
+                            Text(
+                              '$quantity',
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            IconButton(
+                              onPressed: _incrementQuantity,
+                              icon: const Icon(Icons.add),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                            ),
+                            onPressed: () {
+
+                            },
+                            child: const Text('Add to Cart', style: TextStyle(fontSize: 16)),
+                          ),
+                        ),
+                        const SizedBox(width: 13),
+                        Expanded(
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              side: const BorderSide(color: Colors.black, width: 1),
+                            ),
+                            onPressed: () {
+                              // Handle buy now
+                            },
+                            child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
 
-            const SizedBox(height: 20),
 
-            // Add to Cart and Buy Now Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                    ),
-                    onPressed: () {
-                      // Handle add to cart
-                    },
-                    child: const Text('Add to Cart'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFFC107),
-                      foregroundColor: Colors.black,
-                    ),
-                    onPressed: () {
-                      // Handle buy now
-                    },
-                    child: const Text('Buy Now'),
-                  ),
-                ),
-              ],
+      bottomNavigationBar: Container(
+        height: 80,
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildTaskBarItem(
+              icon: Icons.home,
+              label: "Home",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShopPage()),
+                );
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.edit,
+              label: "Products",
+              onTap: () {
+
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.build,
+              label: "Machines",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VendingMachinesPage()),
+                );
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.shopping_cart,
+              label: "Cart",
+              onTap: () {
+
+              },
+            ),
+            _buildTaskBarItem(
+              icon: Icons.person,
+              label: "Me",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
             ),
           ],
         ),
