@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'order_success_page.dart';
 import 'checkout_page_2.dart';
-import 'order_success_page.dart'; // Next step after confirmation
 
 class CheckOutPage3 extends StatelessWidget {
   @override
@@ -11,16 +11,16 @@ class CheckOutPage3 extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Red Header Section
+          // Red Section - Keep this unchanged
           Container(
-            color: Color(0xFFE31C19), // Red color
+            color: Color(0xFFE31C19),
             width: screenWidth,
-            height: screenHeight * 0.35,
+            height: screenHeight * 0.39,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: screenHeight * 0.04),
                 Text(
                   'modulor go',
                   style: TextStyle(
@@ -32,136 +32,147 @@ class CheckOutPage3 extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.02),
                 Text(
-                  'Review & Confirm Your Order',
+                  'Confirm your order details',
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: screenHeight * 0.04,
+                    fontSize: screenHeight * 0.038,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Row(
                   children: [
-                    CircleAvatar(
-                      radius: 6,
-                      backgroundColor: Colors.white.withOpacity(0.5),
-                    ),
+                    CircleAvatar(radius: 6, backgroundColor: Colors.white.withOpacity(0.5)),
                     SizedBox(width: 10),
-                    CircleAvatar(
-                      radius: 6,
-                      backgroundColor: Colors.white.withOpacity(0.5),
-                    ),
+                    CircleAvatar(radius: 6, backgroundColor: Colors.white.withOpacity(0.5)),
                     SizedBox(width: 10),
                     CircleAvatar(
                       radius: 12,
                       backgroundColor: Colors.white,
                       child: Text(
                         '3',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(width: 10),
-                    CircleAvatar(
-                      radius: 6,
-                      backgroundColor: Colors.white.withOpacity(0.5),
-                    ),
+                    CircleAvatar(radius: 6, backgroundColor: Colors.white.withOpacity(0.5)),
                   ],
+                ),
+                SizedBox(height: screenHeight * 0.02),
+                Text(
+                  'Payment Confirmation',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: screenHeight * 0.025,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
           ),
 
-          // White Section - Order Details
+          // White Section - Pickup Location and Payment
           Expanded(
             child: Container(
               color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildOrderItem("Laptop Charger", "\$25"),
-                  SizedBox(height: 10),
-                  _buildOrderItem("USB Cable", "\$10"),
-                  SizedBox(height: 10),
-                  _buildOrderItem("Wireless Mouse", "\$15"),
-                  Divider(thickness: 1),
-                  _buildOrderTotal("Total", "\$50"),
-                  SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context); // Go back to change payment
-                    },
-                    child: Text(
-                      "Change Payment Method",
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.018,
-                        fontFamily: 'Roboto',
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OrderSuccessPage()), // Final step
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(
-                        vertical: 21, horizontal: screenWidth * 0.4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(21),
-                    ),
-                  ),
-                  child: Text(
-                    'Confirm Order',
+                  SizedBox(height: screenHeight * 0.02),
+                  Text(
+                    "You will pick up from",
                     style: TextStyle(
-                      fontSize: screenHeight * 0.02,
-                      fontFamily: 'Roboto',
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 16),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Go back to CheckOutPage2
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
-                    padding: EdgeInsets.symmetric(
-                        vertical: 21, horizontal: screenWidth * 0.4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(21),
-                    ),
-                  ),
-                  child: Text(
-                    'Back',
-                    style: TextStyle(
-                      fontSize: screenHeight * 0.02,
+                      fontSize: screenHeight * 0.018,
                       fontFamily: 'Roboto',
                       color: Colors.black,
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "001",
+                            style: TextStyle(
+                              fontSize: screenHeight * 0.032,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            "Development Lab",
+                            style: TextStyle(
+                              fontSize: screenHeight * 0.022,
+                              fontFamily: 'Roboto',
+                              color: Colors.black,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Handle Location Details Click
+                            },
+                            child: Text(
+                              "Location Details",
+                              style: TextStyle(
+                                fontSize: screenHeight * 0.018,
+                                fontFamily: 'Roboto',
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Image.asset(
+                        'assets/shelf.png', // Make sure the image exists in assets
+                        width: screenWidth * 0.2,
+                        height: screenHeight * 0.1,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.08),
+                  _buildPaymentButton(
+                    "Buy with Apple Pay",
+                    Colors.black,
+                    Colors.white,
+                        () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => OrderSuccessPage()),
+                      );
+                    },
+                  ),
+                  SizedBox(height: screenHeight * 0.015),
+                  _buildPaymentButton(
+                    "Buy with other payments",
+                    Colors.white,
+                    Colors.black,
+                        () {
+                      // Handle other payment logic
+                    },
+                    isOutlined: true,
+                  ),
+                  SizedBox(height: screenHeight * 0.0152),
+                  _buildPaymentButton(
+                    "Back",
+                    Colors.white,
+                    Colors.black,
+                        () {
+                      Navigator.pop(context);
+                    },
+                    isOutlined: true,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -169,54 +180,46 @@ class CheckOutPage3 extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderItem(String name, String price) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          name,
+  // Helper function for payment buttons
+  Widget _buildPaymentButton(String text, Color bgColor, Color textColor, VoidCallback onPressed, {bool isOutlined = false}) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: isOutlined
+          ? OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: textColor),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        child: Text(
+          text,
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Roboto',
-            color: Colors.black,
+            color: textColor,
           ),
         ),
-        Text(
-          price,
+      )
+          : ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bgColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+        child: Text(
+          text,
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'Roboto',
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: textColor,
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildOrderTotal(String label, String price) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'Roboto',
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        Text(
-          price,
-          style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'Roboto',
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
