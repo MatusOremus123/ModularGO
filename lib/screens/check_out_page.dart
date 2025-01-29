@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'cart_page.dart';
 import 'vending_machines_page.dart';
+import 'checkout_page_2.dart';
 
 class CheckOutPage extends StatelessWidget {
   @override
@@ -175,7 +176,11 @@ class CheckOutPage extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            // Handle Next button
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CheckOutPage2()), // Navigate to CheckOutPage2
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
