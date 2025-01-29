@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'check_out_page.dart';
-import 'checkout_page_3.dart'; // Next step in checkout process
+import 'checkout_page_3.dart';
 
 class CheckOutPage2 extends StatelessWidget {
   @override
@@ -13,39 +13,40 @@ class CheckOutPage2 extends StatelessWidget {
         children: [
           // Red Header Section
           Container(
-            color: Color(0xFFE31C19), // Red color
+            color: Color(0xFFE31C19),
             width: screenWidth,
-            height: screenHeight * 0.35,
+            height: screenHeight * 0.39,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.05),
-                Text(
-                  'modulor go',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: screenHeight * 0.03,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                SizedBox(height: screenHeight * 0.055),
+
+                // Logo moved lower
+                Padding(
+                  padding: EdgeInsets.only(top: screenHeight * 0.01), // Adjust height as needed
+                  child: Image.asset(
+                    'assets/MODULAR.png',
+                    width: screenWidth * 0.49,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.02),
+
+                SizedBox(height: screenHeight * 0.086),
                 Text(
-                  'Select your payment method',
+                  'Confirm your order details',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.04,
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: screenHeight * 0.022),
                 Row(
                   children: [
                     CircleAvatar(
                       radius: 6,
-                      backgroundColor: Colors.white.withOpacity(0.5),
+                      backgroundColor: Colors.white.withOpacity(0.2),
                     ),
                     SizedBox(width: 10),
                     CircleAvatar(
@@ -62,7 +63,7 @@ class CheckOutPage2 extends StatelessWidget {
                     ...List.generate(2, (index) {
                       return Row(
                         children: [
-                          SizedBox(width: 10),
+                          SizedBox(width: 12),
                           CircleAvatar(
                             radius: 6,
                             backgroundColor: Colors.white.withOpacity(0.5),
@@ -76,25 +77,89 @@ class CheckOutPage2 extends StatelessWidget {
             ),
           ),
 
-          // White Section - Payment Selection
-          Expanded(
+          // Spacer
+          SizedBox(height: 38),
+
+          // Middle Section (Image + Product Info)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Container(
-              color: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildPaymentOption(Icons.credit_card, "Credit Card"),
-                  SizedBox(height: 10),
-                  _buildPaymentOption(Icons.paypal, "PayPal"),
-                  SizedBox(height: 10),
-                  _buildPaymentOption(Icons.money, "Cash on Pickup"),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    blurRadius: 5,
+                    spreadRadius: 2,
+                  ),
                 ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    // Product Image
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        'assets/SketchPen.png',
+                        width: 60,
+                        height: 70,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+
+                    // Product Info
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Sketch Pen',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Sakura’s Micron Pigma pen',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Details',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      '3,30 €',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
 
-          // Buttons
+          // Spacer
+          Spacer(),
+
+          // Bottom Buttons
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
@@ -126,7 +191,7 @@ class CheckOutPage2 extends StatelessWidget {
                 SizedBox(height: 16),
                 OutlinedButton(
                   onPressed: () {
-                    Navigator.pop(context); // Go back to CheckOutPage
+                    Navigator.pop(context);
                   },
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Colors.black),
@@ -146,30 +211,6 @@ class CheckOutPage2 extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPaymentOption(IconData icon, String label) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 30, color: Colors.black),
-          SizedBox(width: 10),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 18,
-              fontFamily: 'Roboto',
-              color: Colors.black,
             ),
           ),
         ],
