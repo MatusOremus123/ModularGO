@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'code_confirmation_3.dart';
-//import 'close_door_page.dart';
+import 'home_page.dart';
 
-class CodeConfirmation2 extends StatelessWidget {
+class CodeConfirmation4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -10,9 +9,11 @@ class CodeConfirmation2 extends StatelessWidget {
 
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Ensure text starts from the left
         children: [
+          // Header Section
           Container(
-            color: Colors.greenAccent,
+            color: Colors.greenAccent.shade100,
             width: screenWidth,
             height: screenHeight * 0.32,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -32,13 +33,14 @@ class CodeConfirmation2 extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Take your items',
+                  'Thank You !',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.032,
                     color: Colors.black,
                     fontWeight: FontWeight.w300,
                   ),
+                  textAlign: TextAlign.left, // Align text to the left
                 ),
                 SizedBox(height: 15),
                 Row(
@@ -54,32 +56,33 @@ class CodeConfirmation2 extends StatelessWidget {
                     ),
                     SizedBox(width: 10),
                     CircleAvatar(
+                      radius: 7,
+                      backgroundColor: Colors.white.withOpacity(0.5),
+                    ),
+                    SizedBox(width: 10),
+                    CircleAvatar(
                       radius: 14,
                       backgroundColor: Colors.white,
                       child: Text(
-                        '3',
+                        '4',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    CircleAvatar(
-                      radius: 7,
-                      backgroundColor: Colors.white.withOpacity(0.5),
-                    ),
                   ],
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Pick Up Your Items',
+                  'Pick Up completion',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: screenHeight * 0.022,
                     fontWeight: FontWeight.w400,
                     color: Colors.black,
                   ),
+                  textAlign: TextAlign.left,
                 ),
                 Text(
                   'Order details >',
@@ -89,51 +92,54 @@ class CodeConfirmation2 extends StatelessWidget {
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
                   ),
+                  textAlign: TextAlign.left,
                 ),
               ],
             ),
           ),
+
+          // Content Section
           Expanded(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Take your first item from',
-                        style: TextStyle(
-                          fontSize: screenHeight * 0.028,
-                          fontFamily: 'Roboto',
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Door 1',
-                        style: TextStyle(
-                          fontSize: screenHeight * 0.044,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'You have picked all your Items.',
+                    style: TextStyle(
+                      fontSize: screenHeight * 0.029,
+                      fontFamily: 'Roboto',
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    textAlign: TextAlign.left,
                   ),
+                  SizedBox(height: 10),
+                  Text(
+                    'See You Again!',
+                    style: TextStyle(
+                      fontSize: screenHeight * 0.038,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(height: 30),
                 ],
               ),
             ),
           ),
+
+          // Button Section with Navigation
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CloseDoorPage()),
+                    MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -144,7 +150,7 @@ class CodeConfirmation2 extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'I have picked it up',
+                  'Close',
                   style: TextStyle(
                     fontSize: screenHeight * 0.02,
                     color: Colors.white,
