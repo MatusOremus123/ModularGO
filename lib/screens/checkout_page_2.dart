@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../models/cart_item.dart'; // Import the CartItem model
+import '../models/cart_item.dart';
 import 'checkout_page_3.dart';
 
 class CheckOutPage2 extends StatelessWidget {
-  final List<CartItem> cartItems; // Add this parameter
+  final List<CartItem> cartItems;
 
-  CheckOutPage2({required this.cartItems}); // Update the constructor
+  CheckOutPage2({required this.cartItems});
 
   @override
   Widget build(BuildContext context) {
@@ -15,37 +15,35 @@ class CheckOutPage2 extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          // Red Header Section
+
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
-            height: screenHeight * 0.39,
+            height: screenHeight * 0.3,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.055),
-
+                SizedBox(height: screenHeight * 0.07),
                 // Logo moved lower
                 Padding(
-                  padding: EdgeInsets.only(top: screenHeight * 0.01),
+                  padding: EdgeInsets.only(top: screenHeight * 0.023),
                   child: Image.asset(
                     'assets/MODULAR.png',
-                    width: screenWidth * 0.49,
+                    width: screenWidth * 0.47,
                   ),
                 ),
-
-                SizedBox(height: screenHeight * 0.086),
+                SizedBox(height: screenHeight * 0.02),
                 Text(
                   'Confirm your order details',
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: screenHeight * 0.04,
+                    fontSize: screenHeight * 0.03,
                     color: Colors.white,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.022),
+                SizedBox(height: screenHeight * 0.02),
                 Row(
                   children: [
                     CircleAvatar(
@@ -81,98 +79,94 @@ class CheckOutPage2 extends StatelessWidget {
             ),
           ),
 
-          // Spacer
-          SizedBox(height: 38),
-
           // Middle Section (List of Cart Items)
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              itemCount: cartItems.length,
-              itemBuilder: (context, index) {
-                final item = cartItems[index];
-                return Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        blurRadius: 5,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        // Product Image
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            item.imageUrl,
-                            width: 60,
-                            height: 70,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-
-                        // Product Info
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.name,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                item.description,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              SizedBox(height: 2),
-                              Text(
-                                'Details',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          '${item.price * item.quantity} €',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: ListView.builder(
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) {
+                  final item = cartItems[index];
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          blurRadius: 5,
+                          spreadRadius: 2,
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          // Product Image
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              item.imageUrl,
+                              width: 60,
+                              height: 70,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(width: 10),
+
+                          // Product Info
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.name,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  item.description,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Text(
+                                  'Details',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '${item.price * item.quantity} €',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
 
-          // Spacer
-          Spacer(),
-
           // Bottom Buttons
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
               children: [
                 ElevatedButton(
