@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'shop_page.dart';
 import 'product_page.dart';
 import 'home_page.dart'; //something
+import 'cart_page.dart';
 
 class VendingMachinesPage extends StatelessWidget {
   final double bottomImageWidth = 250.0;
@@ -217,8 +218,10 @@ class VendingMachinesPage extends StatelessWidget {
               icon: Icons.shopping_cart,
               label: "Cart",
               onTap: () {
-                // Handle Cart tap
-              },
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartPage()),
+                );},
             ),
             _buildTaskBarItem(
               icon: Icons.person,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
+import 'cart_page.dart';
 
 class ShopPage extends StatelessWidget {
   @override
@@ -149,7 +150,10 @@ class ShopPage extends StatelessWidget {
                 icon: Icons.shopping_cart,
                 label: "Cart",
                 onTap: () {
-
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartPage()),
+                  );
                 },
               ),
               _buildTaskBarItem(

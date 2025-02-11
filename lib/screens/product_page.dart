@@ -6,6 +6,7 @@ import 'shop_page.dart';
 import 'home_page.dart';
 import 'vending_machines_page.dart';
 import 'ProductDetailsPage.dart';
+import 'cart_page.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -283,8 +284,10 @@ class _ProductPageState extends State<ProductPage> {
                 icon: Icons.shopping_cart,
                 label: "Cart",
                 onTap: () {
-
-                },
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => CartPage()),
+                  );},
               ),
               _buildTaskBarItem(
                 icon: Icons.person,
