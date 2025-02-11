@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
+import '../models/cart_item.dart';
+import 'check_out_page.dart';
 import 'shop_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
 import 'settings_page.dart';
-import 'check_out_page.dart';
-
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow,
@@ -44,7 +48,7 @@ class CartPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                // Handle "Switch machines" tap
+
               },
               child: Text(
                 'Switch machines >',
@@ -91,7 +95,7 @@ class CartPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Handle "This machine" button press
+
                   },
                   child: Text('This machine'),
                   style: ElevatedButton.styleFrom(
@@ -101,34 +105,27 @@ class CartPage extends StatelessWidget {
                 ),
                 OutlinedButton(
                   onPressed: () {
-                    // Handle "Other machines" button press
+
                   },
                   child: Text('Other machines'),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Cart in 001 (Development Lab)',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Card(
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: cartProvider.items.length,
+              itemBuilder: (context, index) {
+                final item = cartProvider.items[index];
+                return Card(
                   elevation: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Image.asset(
-                          'assets/SketchPen.png',
+                        Image.network(
+                          item.imageUrl,
                           height: 50,
                           width: 50,
                           errorBuilder: (context, error, stackTrace) {
@@ -141,19 +138,19 @@ class CartPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Sketch Pen',
+                                item.name,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                'Sakura\'s Micron Pigma pen, blau',
+                                item.description,
                                 style: TextStyle(fontSize: 14),
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  // Handle "Details" tap
+
                                 },
                                 child: Text(
                                   'Details',
@@ -173,14 +170,18 @@ class CartPage extends StatelessWidget {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    // Handle decrease quantity
+                                    if (item.quantity > 1) {
+                                      cartProvider.updateQuantity(item.id, item.quantity - 1);
+                                    } else {
+                                      cartProvider.removeItem(item.id);
+                                    }
                                   },
                                   icon: Icon(Icons.remove),
                                 ),
-                                Text('1'),
+                                Text('${item.quantity}'),
                                 IconButton(
                                   onPressed: () {
-                                    // Handle increase quantity
+                                    cartProvider.updateQuantity(item.id, item.quantity + 1);
                                   },
                                   icon: Icon(Icons.add),
                                 ),
@@ -190,13 +191,13 @@ class CartPage extends StatelessWidget {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    // Handle favorite action
+
                                   },
                                   icon: Icon(Icons.favorite_border),
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    // Handle delete action
+                                    cartProvider.removeItem(item.id);
                                   },
                                   icon: Icon(Icons.delete_outline),
                                 ),
@@ -206,7 +207,7 @@ class CartPage extends StatelessWidget {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          '3,30 €',
+                          '${item.price * item.quantity} €',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -215,8 +216,8 @@ class CartPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
@@ -231,7 +232,7 @@ class CartPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Total: 3,30 €',
+                  'Total: ${cartProvider.totalPrice.toStringAsFixed(2)} €',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

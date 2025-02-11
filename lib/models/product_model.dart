@@ -14,10 +14,10 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
-    // Extract the first image URL if available
+
     final images = json['images'] as List?;
     final baseUrl = 'https://mad-shop.onrender.com';
-    String imageUrl = '$baseUrl/uploads/placeholder.png'; // Default placeholder
+    String imageUrl = '$baseUrl/uploads/placeholder.png';
 
     if (images != null && images.isNotEmpty) {
       final firstImage = images[0];
@@ -26,7 +26,7 @@ class Product {
       }
     }
 
-    // Extract price safely
+
     final priceData = json['price'] as Map<String, dynamic>?;
     final double price = priceData != null
         ? (priceData['netPrice'] ?? 0.0).toDouble()

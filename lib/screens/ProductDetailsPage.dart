@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'home_page.dart';
 import 'shop_page.dart';
 import 'vending_machines_page.dart';
+import '../providers/cart_provider.dart';
+import '../models/cart_item.dart';
 
 class ProductInfoPage extends StatefulWidget {
+  final int productId; // Change this to int
   final String productName;
   final String productImage;
   final double productPrice;
   final String productDescription;
 
   const ProductInfoPage({
+    required this.productId, // Change this to int
     required this.productName,
     required this.productImage,
     required this.productPrice,
@@ -128,7 +133,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
             ),
           ),
 
-          // Green Section (Price, Quantity, Buttons)
+
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -184,7 +189,19 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                           padding: const EdgeInsets.symmetric(vertical: 15),
                         ),
                         onPressed: () {
-                          // Handle add to cart
+
+                          final cartProvider = Provider.of<CartProvider>(context, listen: false);
+                          cartProvider.addItem(CartItem(
+                            id: widget.productId,
+                            name: widget.productName,
+                            description: widget.productDescription,
+                            price: widget.productPrice,
+                            imageUrl: widget.productImage,
+                            quantity: quantity,
+                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Added to cart')),
+                          );
                         },
                         child: const Text('Add to Cart', style: TextStyle(fontSize: 16)),
                       ),
@@ -199,7 +216,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
                           side: const BorderSide(color: Colors.black, width: 1),
                         ),
                         onPressed: () {
-                          // Handle buy now
+
                         },
                         child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
                       ),
@@ -212,7 +229,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
         ],
       ),
 
-      // Bottom Navigation Bar
+
       bottomNavigationBar: Container(
         height: 80,
         color: Colors.white,
@@ -233,7 +250,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
               icon: Icons.edit,
               label: "Products",
               onTap: () {
-                // Already on Products page
+
               },
             ),
             _buildTaskBarItem(
@@ -250,7 +267,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
               icon: Icons.shopping_cart,
               label: "Cart",
               onTap: () {
-                // Handle Cart navigation
+
               },
             ),
             _buildTaskBarItem(

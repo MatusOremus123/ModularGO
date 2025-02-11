@@ -27,8 +27,8 @@ class _ProductPageState extends State<ProductPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         body: Column(
           children: [
@@ -55,7 +55,7 @@ class _ProductPageState extends State<ProductPage> {
                           SizedBox(width: 8),
                           GestureDetector(
                             onTap: () {
-                              // Handle campus selection here
+
                             },
                             child: Text(
                               'SRH New Campus >',
@@ -73,7 +73,7 @@ class _ProductPageState extends State<ProductPage> {
                     ],
                   ),
                   SizedBox(height: 15),
-                  // Machine Info
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -100,7 +100,7 @@ class _ProductPageState extends State<ProductPage> {
                           SizedBox(height: 1),
                           GestureDetector(
                             onTap: () {
-                              // Handle switch machines action here
+
                             },
                             child: Text(
                               'Switch machines >',
@@ -125,7 +125,7 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
 
-            // Product Grid Section
+
             Expanded(
               child: Container(
                 color: Colors.white,
@@ -177,6 +177,7 @@ class _ProductPageState extends State<ProductPage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductInfoPage(
+                                  productId: product.id,
                                   productName: product.name,
                                   productImage: product.imageUrl,
                                   productPrice: product.price,
@@ -244,7 +245,7 @@ class _ProductPageState extends State<ProductPage> {
           ],
         ),
 
-        // Bottom Navigation Bar
+
         bottomNavigationBar: Container(
           height: 80,
           color: Colors.white,
@@ -265,7 +266,7 @@ class _ProductPageState extends State<ProductPage> {
                 icon: Icons.edit,
                 label: "Products",
                 onTap: () {
-                  // Already on Products page
+
                 },
               ),
               _buildTaskBarItem(
@@ -282,7 +283,7 @@ class _ProductPageState extends State<ProductPage> {
                 icon: Icons.shopping_cart,
                 label: "Cart",
                 onTap: () {
-                  // Handle Cart navigation
+
                 },
               ),
               _buildTaskBarItem(

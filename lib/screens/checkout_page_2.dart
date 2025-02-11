@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'check_out_page.dart';
+import '../models/cart_item.dart'; // Import the CartItem model
 import 'checkout_page_3.dart';
 
 class CheckOutPage2 extends StatelessWidget {
+  final List<CartItem> cartItems; // Add this parameter
+
+  CheckOutPage2({required this.cartItems}); // Update the constructor
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -24,7 +28,7 @@ class CheckOutPage2 extends StatelessWidget {
 
                 // Logo moved lower
                 Padding(
-                  padding: EdgeInsets.only(top: screenHeight * 0.01), // Adjust height as needed
+                  padding: EdgeInsets.only(top: screenHeight * 0.01),
                   child: Image.asset(
                     'assets/MODULAR.png',
                     width: screenWidth * 0.49,
@@ -80,79 +84,86 @@ class CheckOutPage2 extends StatelessWidget {
           // Spacer
           SizedBox(height: 38),
 
-          // Middle Section (Image + Product Info)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 5,
-                    spreadRadius: 2,
+          // Middle Section (List of Cart Items)
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                final item = cartItems[index];
+                return Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 5,
+                        spreadRadius: 2,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  children: [
-                    // Product Image
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        'assets/SketchPen.png',
-                        width: 60,
-                        height: 70,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(width: 10),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        // Product Image
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            item.imageUrl,
+                            width: 60,
+                            height: 70,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(width: 10),
 
-                    // Product Info
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Sketch Pen',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        // Product Info
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                item.description,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                'Details',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            'Sakura’s Micron Pigma pen',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
+                        ),
+                        Text(
+                          '${item.price * item.quantity} €',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(height: 2),
-                          Text(
-                            'Details',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '3,30 €',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ),
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
-import 'cart_page.dart';
-import 'vending_machines_page.dart';
+import 'package:provider/provider.dart'; // Add this import
+import '../providers/cart_provider.dart'; // Add this import
 import 'checkout_page_2.dart';
 
 class CheckOutPage extends StatelessWidget {
@@ -165,7 +164,7 @@ class CheckOutPage extends StatelessWidget {
                         ),
                         Spacer(),
                         Image.asset(
-                          'assets/shelf.png', // Replace with your image asset
+                          'assets/shelf.png',
                           height: screenHeight * 0.1,
                           fit: BoxFit.cover,
                         ),
@@ -176,10 +175,13 @@ class CheckOutPage extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
+                            // Pass cart items to CheckOutPage2
+                            final cartProvider = Provider.of<CartProvider>(context, listen: false);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CheckOutPage2()), // Navigate to CheckOutPage2
+                                builder: (context) => CheckOutPage2(cartItems: cartProvider.items),
+                              ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -202,7 +204,7 @@ class CheckOutPage extends StatelessWidget {
                         SizedBox(height: 16),
                         OutlinedButton(
                           onPressed: () {
-                            Navigator.pop(context); // Handle Back button
+                            Navigator.pop(context);
                           },
                           style: OutlinedButton.styleFrom(
                             side: BorderSide(color: Colors.black),
@@ -229,7 +231,6 @@ class CheckOutPage extends StatelessWidget {
             ),
           ],
         ),
-        // Bottom navigation bar removed from here
       ),
     );
   }

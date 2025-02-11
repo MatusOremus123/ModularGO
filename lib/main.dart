@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/cart_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/second_page.dart';
 
@@ -11,9 +13,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return ChangeNotifierProvider(
+      create: (_) => CartProvider(), // Wrap your app with CartProvider
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+        routes: {
+          '/second': (context) => SecondPage(), // Example route
+          // Add other routes here as needed
+        },
+      ),
     );
   }
 }
