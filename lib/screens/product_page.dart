@@ -1,94 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '../models/product_model.dart';
+import '../services/api_service.dart';
 import 'shop_page.dart';
 import 'home_page.dart';
 import 'vending_machines_page.dart';
 import 'ProductDetailsPage.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
+  @override
+  _ProductPageState createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  late Future<List<Product>> _productsFuture;
+  final ApiService _apiService = ApiService();
+
+  @override
+  void initState() {
+    super.initState();
+    _productsFuture = _apiService.fetchProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final List<Map<String, String>> products = [
-      {
-        'image': 'assets/Sketchbook.png',
-        'name': 'Sketchbook',
-        'price': '€3.10',
-        'description': 'A perfect sketchbook for artists and designers.',
-      },
-      {
-        'image': 'assets/Maker.png',
-        'name': 'Marker',
-        'price': '€2.75',
-        'description': 'High-quality markers for professional use.',
-      },
-      {
-        'image': 'assets/Notebook.png',
-        'name': 'Notebook',
-        'price': '€9.50',
-        'description': 'Durable notebook with smooth paper for all your notes.',
-      },
-      {
-        'image': 'assets/SketchPen.png',
-        'name': 'Sketch Pen',
-        'price': '€3.30',
-        'description': 'Vibrant sketch pens perfect for creative illustrations.',
-      },
-      {
-        'image': 'assets/PaperRolls.png',
-        'name': 'Paper Rolls',
-        'price': '€7.90',
-        'description': 'High-quality paper rolls for drafting and crafts.',
-      },
-      {
-        'image': 'assets/ColorPaper.png',
-        'name': 'Color Paper',
-        'price': '€2.50',
-        'description': 'Bright and colorful papers for creative projects.',
-      },
-      {
-        'image': 'assets/BallpointPen.png',
-        'name': 'Ballpoint Pen',
-        'price': '€1.20',
-        'description': 'Smooth and reliable ballpoint pens.',
-      },
-      {
-        'image': 'assets/Ruler.png',
-        'name': 'Ruler',
-        'price': '€0.90',
-        'description': 'Sturdy ruler for accurate measurements.',
-      },
-      {
-        'image': 'assets/Cutter.png',
-        'name': 'Cutter',
-        'price': '€4.50',
-        'description': 'Sharp and safe cutter for all cutting needs.',
-      },
-      {
-        'image': 'assets/Tape.png',
-        'name': 'Tape',
-        'price': '€1.00',
-        'description': 'Durable adhesive tape for various uses.',
-      },
-      {
-        'image': 'assets/CuttingMat.png',
-        'name': 'Cutting Mat',
-        'price': '€12.00',
-        'description': 'Protective cutting mat for craft and design work.',
-      },
-      {
-        'image': 'assets/MechanicalPencil.png',
-        'name': 'Mechanical Pencil',
-        'price': '€3.80',
-        'description': 'Premium mechanical pencil for precision writing.',
-      },
-    ];
-
     return WillPopScope(
-      onWillPop: () async {
-        return false; // Prevents back navigation
-      },
+      onWillPop: () async => false,
       child: Scaffold(
         body: Column(
           children: [
@@ -185,57 +125,117 @@ class ProductPage extends StatelessWidget {
               ),
             ),
 
-            // Content Section with Product Grid
+            // Product Grid Section
             Expanded(
               child: Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(16),
-                child: GridView.builder(
-                  itemCount: products.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.8,
-                  ),
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductInfoPage(
-                              productName: product['name'] ?? 'Unknown',
-                              productImage: product['image'] ?? '',
-                              productPrice: double.tryParse(product['price']?.replaceAll('€', '') ?? '0.0') ?? 0.0,
-                              productDescription: product['description'] ?? '',
+                child: FutureBuilder<List<Product>>(
+                  future: _productsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.error_outline, size: 50, color: Colors.red),
+                            SizedBox(height: 10),
+                            Text('Failed to load products'),
+                            ElevatedButton(
+                              onPressed: () => setState(() {
+                                _productsFuture = _apiService.fetchProducts();
+                              }),
+                              child: Text('Retry'),
                             ),
+                          ],
+                        ),
+                      );
+                    }
+
+                    final products = snapshot.data ?? [];
+                    if (products.isEmpty) {
+                      return Center(child: Text('No products available'));
+                    }
+
+                    return GridView.builder(
+                      itemCount: products.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.8,
+                      ),
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductInfoPage(
+                                  productName: product.name,
+                                  productImage: product.imageUrl,
+                                  productPrice: product.price,
+                                  productDescription: product.description,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: product.imageUrl.isNotEmpty
+                                    ? Image.network(
+                                  product.imageUrl,
+                                  fit: BoxFit.contain,
+                                  loadingBuilder: (context, child, progress) {
+                                    return progress == null
+                                        ? child
+                                        : Center(
+                                      child: CircularProgressIndicator(
+                                        value: progress.expectedTotalBytes != null
+                                            ? progress.cumulativeBytesLoaded /
+                                            progress.expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(Icons.error_outline, size: 40),
+                                )
+                                    : Container(
+                                  color: Colors.grey[200],
+                                  child: Center(child: Icon(Icons.image_not_supported)),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                product.name,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                '€${product.price.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey[700],
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            product['image'] ?? '',
-                            height: screenHeight * 0.1,
-                            fit: BoxFit.contain,
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            product['name'] ?? 'Unknown',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            product['price'] ?? '€0.00',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
                     );
                   },
                 ),

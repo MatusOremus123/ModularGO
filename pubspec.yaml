@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_screenutil: ^5.9.3
+  http: ^1.1.0
 
 # Development dependencies (e.g., for tests or linting)
 dev_dependencies:

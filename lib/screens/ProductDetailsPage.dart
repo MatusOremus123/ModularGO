@@ -22,7 +22,6 @@ class ProductInfoPage extends StatefulWidget {
 
 class _ProductInfoPageState extends State<ProductInfoPage> {
   int quantity = 1;
-  String selectedColor = "";
 
   void _incrementQuantity() {
     setState(() {
@@ -66,9 +65,6 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final List<String> colors = [
-      'Blau', 'Braun', 'Gelb', 'Grün', 'Orange', 'Rosa', 'Rot', 'Schwarz', 'Violett'
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -77,157 +73,146 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
       ),
       body: Column(
         children: [
-          // Product Image
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Image.asset(
-              widget.productImage,
-              height: screenHeight * 0.22,
-              fit: BoxFit.contain,
-            ),
-          ),
-
-          const SizedBox(height: 10),
-
-          // Product Details
-          Text(
-            widget.productName,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-
-          const SizedBox(height: 10),
-
-          // Product Description
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              widget.productDescription,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ),
-
-          const SizedBox(height: 10),
-
-
+          // Scrollable content
           Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "PLEASE SELECT A SPECIFICATION OR COLOR TO CONTINUE",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Product Image
+                  Padding(
+                    padding: const EdgeInsets.all(13.0),
+                    child: widget.productImage.isNotEmpty
+                        ? Image.network(
+                      widget.productImage,
+                      height: screenHeight * 0.22,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Icon(
+                        Icons.error_outline,
+                        size: 40,
+                        color: Colors.red,
+                      ),
+                    )
+                        : Container(
+                      height: screenHeight * 0.23,
+                      color: Colors.grey[200],
+                      child: Center(
+                        child: Icon(
+                          Icons.image_not_supported,
+                          size: 40,
+                          color: Colors.grey[400],
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 10),
+                  ),
 
-                    // Color Options
-                    Wrap(
-                      spacing: 11,
-                      runSpacing: 8,
-                      children: colors.map((color) {
-                        return ChoiceChip(
-                          label: Text(color),
-                          selected: selectedColor == color,
-                          onSelected: (selected) {
-                            setState(() {
-                              selectedColor = selected ? color : "";
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Price and Quantity
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Product Details
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Text(
-                            '€${(widget.productPrice * quantity).toStringAsFixed(2)}',
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        Text(
+                          widget.productName,
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-
-
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: _decrementQuantity,
-                              icon: const Icon(Icons.remove),
-                            ),
-                            Text(
-                              '$quantity',
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                            IconButton(
-                              onPressed: _incrementQuantity,
-                              icon: const Icon(Icons.add),
-                            ),
-                          ],
+                        const SizedBox(height: 10),
+                        Text(
+                          widget.productDescription,
+                          style: const TextStyle(fontSize: 16, color: Colors.grey),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
-                    const SizedBox(height: 20),
-
-
+          // Green Section (Price, Quantity, Buttons)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Price and Quantity
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        '€${(widget.productPrice * quantity).toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     Row(
                       children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            onPressed: () {
-
-                            },
-                            child: const Text('Add to Cart', style: TextStyle(fontSize: 16)),
-                          ),
+                        IconButton(
+                          onPressed: _decrementQuantity,
+                          icon: const Icon(Icons.remove),
                         ),
-                        const SizedBox(width: 13),
-                        Expanded(
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black,
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              side: const BorderSide(color: Colors.black, width: 1),
-                            ),
-                            onPressed: () {
-                              // Handle buy now
-                            },
-                            child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
-                          ),
+                        Text(
+                          '$quantity',
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        IconButton(
+                          onPressed: _incrementQuantity,
+                          icon: const Icon(Icons.add),
                         ),
                       ],
                     ),
                   ],
                 ),
-              ),
+
+                const SizedBox(height: 20),
+
+                // Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                        ),
+                        onPressed: () {
+                          // Handle add to cart
+                        },
+                        child: const Text('Add to Cart', style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                    const SizedBox(width: 13),
+                    Expanded(
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          side: const BorderSide(color: Colors.black, width: 1),
+                        ),
+                        onPressed: () {
+                          // Handle buy now
+                        },
+                        child: const Text('Buy Now', style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
 
-
+      // Bottom Navigation Bar
       bottomNavigationBar: Container(
         height: 80,
         color: Colors.white,
@@ -248,7 +233,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
               icon: Icons.edit,
               label: "Products",
               onTap: () {
-
+                // Already on Products page
               },
             ),
             _buildTaskBarItem(
@@ -265,7 +250,7 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
               icon: Icons.shopping_cart,
               label: "Cart",
               onTap: () {
-
+                // Handle Cart navigation
               },
             ),
             _buildTaskBarItem(
