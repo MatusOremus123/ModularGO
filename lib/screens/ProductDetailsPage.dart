@@ -5,6 +5,7 @@ import 'shop_page.dart';
 import 'vending_machines_page.dart';
 import '../providers/cart_provider.dart';
 import '../models/cart_item.dart';
+import 'cart_page.dart';
 
 class ProductInfoPage extends StatefulWidget {
   final int productId; // Change this to int
@@ -267,7 +268,10 @@ class _ProductInfoPageState extends State<ProductInfoPage> {
               icon: Icons.shopping_cart,
               label: "Cart",
               onTap: () {
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartPage()),
+                );
               },
             ),
             _buildTaskBarItem(

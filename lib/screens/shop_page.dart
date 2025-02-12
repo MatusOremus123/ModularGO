@@ -3,8 +3,12 @@ import 'home_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
 import 'cart_page.dart';
+import '../services/api_service.dart';
+import '../models/product_model.dart';
 
 class ShopPage extends StatelessWidget {
+  final ApiService apiService = ApiService();
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -34,7 +38,7 @@ class ShopPage extends StatelessWidget {
                   SizedBox(height: 5),
                   GestureDetector(
                     onTap: () {
-
+                      // Handle tap
                     },
                     child: Text(
                       'SRH New Campus >',
@@ -49,7 +53,7 @@ class ShopPage extends StatelessWidget {
                 ],
               ),
             ),
-            // Search Bar Section
+
             Container(
               color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -67,44 +71,55 @@ class ShopPage extends StatelessWidget {
                 ),
               ),
             ),
-            // Products and Content Section
+
             Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Products Section
-                      _buildSectionTitle('Products near you'),
-                      SizedBox(height: 12),
-                      _buildHorizontalList([
-                        {'imagePath': 'assets/Maker.png', 'name': 'Marker', 'price': '2,75 €'},
-                        {'imagePath': 'assets/Sketchbook.png', 'name': 'Sketchbook', 'price': '3,10 €'},
-                        {'imagePath': 'assets/Notebook.png', 'name': 'Notebook', 'price': '2,50 €'},
-                      ], screenWidth),
+              child: FutureBuilder<List<Product>>(
+                future: apiService.fetchProducts(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No products available'));
+                  } else {
+                    final products = snapshot.data!;
 
-                      SizedBox(height: 20),
-                      // Vending Machines Section
-                      _buildSectionTitle('Vending Machines near you'),
-                      SizedBox(height: 14),
-                      _buildHorizontalList([
-                        {'imagePath': 'assets/MachinePicture.png', 'name': '001', 'price': ''},
-                      ], screenWidth),
+                    return SingleChildScrollView(
+                      child: Container(
+                        color: Colors.white,
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Products Section
+                            _buildSectionTitle('Products near you'),
+                            SizedBox(height: 12),
+                            _buildProductList(products, screenWidth),
 
-                      SizedBox(height: 20),
-                      // Former Purchases Section
-                      _buildSectionTitle('Your former purchase'),
-                      SizedBox(height: 18),
-                      _buildHorizontalList([
-                        {'imagePath': 'assets/Maker.png', 'name': 'Pen', 'price': '1,50 €'},
-                        {'imagePath': 'assets/Notebook.png', 'name': 'Notebook', 'price': '2,50 €'},
-                        {'imagePath': 'assets/Sketchbook.png', 'name': 'Sketchbook', 'price': '3,10 €'},
-                      ], screenWidth),
-                    ],
-                  ),
-                ),
+                            SizedBox(height: 20),
+                            // Vending Machines Section (Hardcoded)
+                            _buildSectionTitle('Vending Machines near you'),
+                            SizedBox(height: 14),
+                            _buildHardcodedList([
+                              {
+                                'imagePath': 'assets/MachinePicture.png',
+                                'name': '001',
+                                'price': '',
+                              },
+                            ], screenWidth),
+
+                            SizedBox(height: 20),
+
+                            _buildSectionTitle('Your former purchase'),
+                            SizedBox(height: 18),
+                            _buildProductList(products, screenWidth),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -187,7 +202,7 @@ class ShopPage extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-
+            // Handle tap
           },
           child: Text(
             '> ',
@@ -202,7 +217,56 @@ class ShopPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHorizontalList(List<Map<String, String>> items, double screenWidth) {
+  // Method to build a list of products
+  Widget _buildProductList(List<Product> products, double screenWidth) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: products.map((product) {
+          return Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: screenWidth * 0.39,
+                  height: 160,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(21),
+                    image: DecorationImage(
+                      image: NetworkImage(product.imageUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  product.name,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  '${product.price.toStringAsFixed(2)} €',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+
+  Widget _buildHardcodedList(List<Map<String, String>> items, double screenWidth) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'shop_page.dart';
 import 'product_page.dart';
-import 'home_page.dart'; //something
+import 'home_page.dart';
 import 'cart_page.dart';
 
 class VendingMachinesPage extends StatelessWidget {

@@ -15,7 +15,7 @@ class CheckOutPage2 extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-
+          // Red Header Section
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
@@ -104,7 +104,7 @@ class CheckOutPage2 extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: Row(
                         children: [
-                          // Product Image
+                          // Product Image with Error Handling
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
@@ -112,6 +112,18 @@ class CheckOutPage2 extends StatelessWidget {
                               width: 60,
                               height: 70,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  width: 60,
+                                  height: 70,
+                                  color: Colors.grey[300],
+                                  child: Icon(
+                                    Icons.broken_image,
+                                    color: Colors.grey,
+                                    size: 30,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           SizedBox(width: 10),
@@ -127,6 +139,8 @@ class CheckOutPage2 extends StatelessWidget {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                                 SizedBox(height: 2),
                                 Text(
@@ -135,6 +149,8 @@ class CheckOutPage2 extends StatelessWidget {
                                     fontSize: 14,
                                     color: Colors.grey,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                                 SizedBox(height: 2),
                                 Text(
@@ -149,7 +165,7 @@ class CheckOutPage2 extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '${item.price * item.quantity} €',
+                            '${(item.price * item.quantity).toStringAsFixed(2)} €',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

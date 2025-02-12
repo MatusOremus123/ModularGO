@@ -7,6 +7,7 @@ import 'shop_page.dart';
 import 'product_page.dart';
 import 'vending_machines_page.dart';
 import 'settings_page.dart';
+
 class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class CartPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-
+                // Handle switch machines
               },
               child: Text(
                 'Switch machines >',
@@ -95,7 +96,7 @@ class CartPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-
+                    // Handle "This machine" button
                   },
                   child: Text('This machine'),
                   style: ElevatedButton.styleFrom(
@@ -105,7 +106,7 @@ class CartPage extends StatelessWidget {
                 ),
                 OutlinedButton(
                   onPressed: () {
-
+                    // Handle "Other machines" button
                   },
                   child: Text('Other machines'),
                 ),
@@ -114,14 +115,14 @@ class CartPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(15.0),
               itemCount: cartProvider.items.length,
               itemBuilder: (context, index) {
                 final item = cartProvider.items[index];
                 return Card(
                   elevation: 2,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Row(
                       children: [
                         Image.network(
@@ -145,12 +146,12 @@ class CartPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                item.description,
+                                _truncateDescription(item.description, 100), // Truncated description
                                 style: TextStyle(fontSize: 14),
                               ),
                               GestureDetector(
                                 onTap: () {
-
+                                  // Handle details
                                 },
                                 child: Text(
                                   'Details',
@@ -191,7 +192,7 @@ class CartPage extends StatelessWidget {
                               children: [
                                 IconButton(
                                   onPressed: () {
-
+                                    // Handle favorite
                                   },
                                   icon: Icon(Icons.favorite_border),
                                 ),
@@ -207,7 +208,7 @@ class CartPage extends StatelessWidget {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          '${item.price * item.quantity} €',
+                          '${(item.price * item.quantity).toStringAsFixed(2)} €',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -287,8 +288,7 @@ class CartPage extends StatelessWidget {
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => VendingMachinesPage()),
+                      MaterialPageRoute(builder: (context) => VendingMachinesPage()),
                     );
                   },
                 ),
@@ -340,5 +340,12 @@ class CartPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _truncateDescription(String text, int maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return '${text.substring(0, maxLength)}...';
   }
 }
