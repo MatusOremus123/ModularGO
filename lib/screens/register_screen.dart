@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'VerificationScreen.dart'; // Import the VerificationScreen
+import 'VerificationScreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
