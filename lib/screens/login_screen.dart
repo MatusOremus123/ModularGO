@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'register_screen.dart'; // Import the RegisterScreen
-import 'one_time_screen.dart'; // Import the OneTimeCodeScreen
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import 'register_screen.dart';
+import 'one_time_screen.dart';
 
 class LoginScreen extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       body: Column(
@@ -62,7 +68,7 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         SizedBox(height: 20),
                         Text(
-                          "Please enter your email address to receive a one-time code.",
+                          "Please enter your email address and password to log in.",
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 16,
@@ -71,6 +77,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 17),
                         TextField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                             labelText: "Email address",
                             labelStyle: TextStyle(
@@ -98,16 +105,66 @@ class LoginScreen extends StatelessWidget {
                             fontSize: 20,
                           ),
                         ),
+                        SizedBox(height: 17),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            labelStyle: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 18,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 16,
+                            ),
+                          ),
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 20,
+                          ),
+                        ),
                         SizedBox(height: 25),
                         ElevatedButton(
-                          onPressed: () {
-                            // Navigate to OneTimeCodeScreen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OneTimeCodeScreen(),
-                              ),
-                            );
+                          onPressed: () async {
+                            try {
+                              await authProvider.login(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                              // Show success message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Login successful!'),
+                                ),
+                              );
+                              // Navigate to OneTimeCodeScreen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OneTimeCodeScreen(),
+                                ),
+                              );
+                            } catch (e) {
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Login failed: $e'),
+                                ),
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -120,7 +177,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              "Next",
+                              "Log in",
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 20,
@@ -135,9 +192,17 @@ class LoginScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // Navigate to OneTimeCodeScreen
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => OneTimeCodeScreen(),
+                                    ),
+                                  );
+                                },
                                 child: Text(
-                                  "Log in with your password",
+                                  "Log in with a one-time code",
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     fontSize: 14,
@@ -207,35 +272,35 @@ class LoginScreen extends StatelessWidget {
                   icon: Icons.home,
                   label: "Home",
                   onTap: () {
-                    // Navigate to Home Screen
+
                   },
                 ),
                 _buildTaskBarItem(
                   icon: Icons.edit,
                   label: "Products",
                   onTap: () {
-                    // Navigate to Products Screen
+
                   },
                 ),
                 _buildTaskBarItem(
                   icon: Icons.build,
                   label: "Machines",
                   onTap: () {
-                    // Navigate to Machines Screen
+
                   },
                 ),
                 _buildTaskBarItem(
                   icon: Icons.shopping_cart,
                   label: "Cart",
                   onTap: () {
-                    // Navigate to Cart Screen
+
                   },
                 ),
                 _buildTaskBarItem(
                   icon: Icons.person,
                   label: "Me",
                   onTap: () {
-                    // Navigate to Profile Screen
+
                   },
                 ),
               ],

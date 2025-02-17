@@ -17,9 +17,10 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_screenutil: ^5.9.3
-  http: ^1.1.0
+  http: ^1.3.0
   provider: ^6.0.0
-  shared_preferences: ^2.1.0
+
+
 # Development dependencies (e.g., for tests or linting)
 dev_dependencies:
   flutter_test:

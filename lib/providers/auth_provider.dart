@@ -2,29 +2,66 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 
 class AuthProvider with ChangeNotifier {
-  String? _token;
+  final AuthService _authService = AuthService();
+  bool _isLoggedIn = false;
 
-  String? get token => _token;
-  bool get isAuthenticated => _token != null;
+  bool get isLoggedIn => _isLoggedIn;
 
-  // Login
-  Future<bool> login(String email, String password) async {
-    _token = await AuthService.loginUser(email, password);
-    notifyListeners();
-    return _token != null;
+
+  Future<void> register({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _authService.registerUser(
+        username: username,
+        email: email,
+        password: password,
+      );
+
+      if (response.statusCode == 200) {
+
+        _isLoggedIn = true;
+        notifyListeners();
+      } else {
+
+        throw Exception('Failed to register: ${response.body}');
+      }
+    } catch (e) {
+
+      throw Exception('Registration error: $e');
+    }
   }
 
-  // Register
-  Future<bool> register(String username, String email, String password) async {
-    _token = await AuthService.registerUser(username, email, password);
-    notifyListeners();
-    return _token != null;
+
+  Future<void> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await _authService.loginUser(
+        email: email,
+        password: password,
+      );
+
+      if (response.statusCode == 200) {
+        // Login successful
+        _isLoggedIn = true;
+        notifyListeners();
+      } else {
+
+        throw Exception('Failed to login: ${response.body}');
+      }
+    } catch (e) {
+
+      throw Exception('Login error: $e');
+    }
   }
 
-  // Logout
+
   void logout() {
-    AuthStorage.clearToken();
-    _token = null;
+    _isLoggedIn = false;
     notifyListeners();
   }
 }

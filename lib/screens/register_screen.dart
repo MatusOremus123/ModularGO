@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import 'VerificationScreen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -8,16 +10,24 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   bool isChecked = false;
+  final _formKey = GlobalKey<FormState>();
+
+
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       body: Column(
         children: [
-          // Dynamic Red Header Section
+
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
@@ -76,164 +86,174 @@ class _RegisterScreenState extends State<RegisterScreen> {
               color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'First name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(21),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      TextFormField(
+                        controller: _firstNameController,
+                        decoration: InputDecoration(
+                          labelText: 'First name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(21),
+                          ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                    SizedBox(height: 17),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Last name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(21),
+                      SizedBox(height: 17),
+                      TextFormField(
+                        controller: _lastNameController,
+                        decoration: InputDecoration(
+                          labelText: 'Last name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(21),
+                          ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your last name';
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                    SizedBox(height: 17),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Birthday',
-                        hintText: 'DD-MM-YYYY',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(21),
+                      SizedBox(height: 17),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'E-mail',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(21),
+                          ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                       ),
-                    ),
-                    SizedBox(height: 17),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: 'E-mail',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(21),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      "In the next step you will receive a verification code to this email address.",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    SizedBox(height: 20),
-                    TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        suffixIcon: Icon(Icons.visibility),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(21),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Make sure the password contains:\n"
-                            "• At least 8 characters\n"
-                            "• A capital letter\n"
-                            "• A lowercase letter\n"
-                            "• At least one number or special character\n"
-                            "• No more than two repeated characters in a line",
+                      SizedBox(height: 20),
+                      Text(
+                        "In the next step you will receive a verification code to this email address.",
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Checkbox(
-                          value: isChecked,
-                          onChanged: (value) {
-                            setState(() {
-                              isChecked = value ?? false;
-                            });
-                          },
+                      SizedBox(height: 20),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          suffixIcon: Icon(Icons.visibility),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(21),
+                          ),
                         ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Text.rich(
-                              TextSpan(
-                                text: "I hereby agree to the ",
-                                style: TextStyle(fontSize: 12),
-                                children: [
-                                  TextSpan(
-                                    text: "conditions of registration.",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.black,
-                                      decoration: TextDecoration.underline,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          }
+                          if (value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          if (!RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).+$').hasMatch(value)) {
+                            return 'Password must contain a capital letter, a lowercase letter, a number, and a special character';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                isChecked = value ?? false;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {},
+                              child: Text.rich(
+                                TextSpan(
+                                  text: "I hereby agree to the ",
+                                  style: TextStyle(fontSize: 12),
+                                  children: [
+                                    TextSpan(
+                                      text: "conditions of registration.",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                        decoration: TextDecoration.underline,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: isChecked
-                          ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VerificationScreen(),
-                          ),
-                        );
-                      }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(21),
-                        ),
+                        ],
                       ),
-                      child: Text(
-                        "Next",
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Text(
-                          "modulor go - ",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Text(
-                            "Cookie Policy and Privacy Policy",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
+                      SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: isChecked
+                            ? () async {
+                          if (_formKey.currentState!.validate()) {
+                            try {
+                              await authProvider.register(
+                                username: _firstNameController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VerificationScreen(),
+                                ),
+                              );
+                            } catch (e) {
+                              // Show error message
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Registration failed: $e'),
+                                ),
+                              );
+                            }
+                          }
+                        }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          minimumSize: Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(21),
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          "© 2024 Modulor",
-                          style: TextStyle(fontSize: 12),
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

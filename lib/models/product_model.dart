@@ -19,10 +19,12 @@ class Product {
     final baseUrl = 'https://mad-shop.onrender.com';
     String imageUrl = '$baseUrl/uploads/placeholder.png';
 
-    if (images != null && images.isNotEmpty) {
+    if (images!.isNotEmpty) {
       final firstImage = images[0];
-      if (firstImage['url'] != null) {
-        imageUrl = '$baseUrl${firstImage['url']}';
+      if (firstImage['formats'] != null && firstImage['formats']['small'] != null) {
+        imageUrl = firstImage['formats']['small']['url'];
+      } else if (firstImage['url'] != null) {
+        imageUrl = firstImage['url'];
       }
     }
 
