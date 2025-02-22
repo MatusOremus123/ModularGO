@@ -79,7 +79,7 @@ class CheckOutPage2 extends StatelessWidget {
             ),
           ),
 
-          // Middle Section (List of Cart Items)
+
           Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -104,7 +104,7 @@ class CheckOutPage2 extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       child: Row(
                         children: [
-                          // Product Image with Error Handling
+
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
@@ -128,7 +128,7 @@ class CheckOutPage2 extends StatelessWidget {
                           ),
                           SizedBox(width: 10),
 
-                          // Product Info
+
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +180,7 @@ class CheckOutPage2 extends StatelessWidget {
             ),
           ),
 
-          // Bottom Buttons
+
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(

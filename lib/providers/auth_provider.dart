@@ -46,7 +46,7 @@ class AuthProvider with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        // Login successful
+
         _isLoggedIn = true;
         notifyListeners();
       } else {
