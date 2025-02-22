@@ -9,20 +9,30 @@ class OrderService {
     required Order order,
     required String jwt,
   }) async {
+
+    final requestBody = {
+      'data': order.toJson(),
+    };
+
+
+    print('Request Body: ${jsonEncode(requestBody)}');
+
     final response = await http.post(
-      Uri.parse('$baseUrl/orders'),
+      Uri.parse('$baseUrl/orders?populate=*'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $jwt',
       },
-      body: jsonEncode(order.toJson()),
+      body: jsonEncode(requestBody),
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
 
+    print('Response Status Code: ${response.statusCode}');
+    print('Response Body: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
       print('Order placed successfully: ${response.body}');
     } else {
-
       throw Exception('Failed to place order: ${response.body}');
     }
   }

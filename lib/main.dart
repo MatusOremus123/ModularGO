@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/cart_provider.dart';
 import 'providers/auth_provider.dart';
+import 'services/order_service.dart';
 import 'screens/splash_screen.dart';
 import 'screens/second_page.dart';
 
@@ -18,13 +19,13 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        Provider(create: (_) => OrderService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
         routes: {
           '/second': (context) => SecondPage(),
-
         },
       ),
     );

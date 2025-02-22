@@ -1,20 +1,19 @@
 class Order {
+  final String orderStatus;
+  final bool issue;
   final List<Map<String, dynamic>> items;
-  final double totalAmount;
-  final String userId;
 
   Order({
+    required this.orderStatus,
+    required this.issue,
     required this.items,
-    required this.totalAmount,
-    required this.userId,
   });
-
 
   Map<String, dynamic> toJson() {
     return {
+      'orderStatus': orderStatus,
+      'issue': issue,
       'items': items,
-      'totalAmount': totalAmount,
-      'user': userId,
     };
   }
 }

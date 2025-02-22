@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/cart_provider.dart';
+import '../providers/auth_provider.dart';
+import '../services/order_service.dart';
+import '../models/order_model.dart';
 import 'order_success_page.dart';
-import 'checkout_page_2.dart';
 
-class CheckOutPage3 extends StatelessWidget {
+class CheckOutPage3 extends StatefulWidget {
+  @override
+  _CheckOutPage3State createState() => _CheckOutPage3State();
+}
+
+class _CheckOutPage3State extends State<CheckOutPage3> {
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final cartProvider = Provider.of<CartProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    final orderService = Provider.of<OrderService>(context);
+
     return Scaffold(
       body: Column(
         children: [
-          // Red Section - Keep this unchanged
+
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
@@ -73,7 +88,7 @@ class CheckOutPage3 extends StatelessWidget {
             ),
           ),
 
-          // White Section - Pickup Location and Payment
+
           Expanded(
             child: Container(
               color: Colors.white,
@@ -116,7 +131,7 @@ class CheckOutPage3 extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // Handle Location Details Click
+
                             },
                             child: Text(
                               "Location Details",
@@ -132,7 +147,7 @@ class CheckOutPage3 extends StatelessWidget {
                       ),
                       Spacer(),
                       Image.asset(
-                        'assets/shelf.png', // Make sure the image exists in assets
+                        'assets/shelf.png',
                         width: screenWidth * 0.2,
                         height: screenHeight * 0.1,
                         fit: BoxFit.cover,
@@ -144,12 +159,64 @@ class CheckOutPage3 extends StatelessWidget {
                     "Buy with Apple Pay",
                     Colors.black,
                     Colors.white,
-                        () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => OrderSuccessPage()),
-                      );
+                        () async {
+                      if (_isLoading) return;
+
+                      setState(() {
+                        _isLoading = true;
+                      });
+
+                      try {
+
+                        final items = cartProvider.items.map((item) {
+                          return {
+                            'product': item.id.toString(),
+                            'quantity': item.quantity,
+                            'price': {
+                              'netPrice': item.price,
+                              'currency': 'EUR',
+                              'vatRate': 0.19,
+                            },
+                          };
+                        }).toList();
+
+                        // Create an Order object
+                        final order = Order(
+                          orderStatus: 'UNPAID',
+                          issue: false,
+                          items: items,
+                        );
+
+
+                        final jwt = authProvider.token;
+
+                        if (jwt == null) {
+                          throw Exception('User is not logged in');
+                        }
+
+
+                        await orderService.placeOrder(order: order, jwt: jwt);
+
+
+                        cartProvider.clearCart();
+
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OrderSuccessPage()),
+                        );
+                      } catch (e) {
+                        // Handle errors
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to place order: $e')),
+                        );
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
                     },
+                    isLoading: _isLoading,
                   ),
                   SizedBox(height: screenHeight * 0.015),
                   _buildPaymentButton(
@@ -157,7 +224,7 @@ class CheckOutPage3 extends StatelessWidget {
                     Colors.white,
                     Colors.black,
                         () {
-                      // Handle other payment logic
+
                     },
                     isOutlined: true,
                   ),
@@ -180,8 +247,8 @@ class CheckOutPage3 extends StatelessWidget {
     );
   }
 
-  // Helper function for payment buttons
-  Widget _buildPaymentButton(String text, Color bgColor, Color textColor, VoidCallback onPressed, {bool isOutlined = false}) {
+
+  Widget _buildPaymentButton(String text, Color bgColor, Color textColor, VoidCallback onPressed, {bool isOutlined = false, bool isLoading = false}) {
     return SizedBox(
       width: double.infinity,
       height: 55,
@@ -194,7 +261,9 @@ class CheckOutPage3 extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-        child: Text(
+        child: isLoading
+            ? CircularProgressIndicator(color: textColor)
+            : Text(
           text,
           style: TextStyle(
             fontSize: 18,
@@ -211,7 +280,9 @@ class CheckOutPage3 extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-        child: Text(
+        child: isLoading
+            ? CircularProgressIndicator(color: textColor)
+            : Text(
           text,
           style: TextStyle(
             fontSize: 18,
