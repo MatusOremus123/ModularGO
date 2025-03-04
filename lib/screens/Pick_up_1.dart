@@ -1,202 +1,258 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
-import 'cart_page.dart';
-import 'vending_machines_page.dart';
-import 'order_success_page.dart';
-import 'Code_Confirmation.dart';
+import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import '../providers/auth_provider.dart';
+import '../services/pickup_service.dart';
+import '../models/pickup_model.dart';
 
-class PickUp1 extends StatelessWidget {
+class PickUp1 extends StatefulWidget {
+  final String orderDocumentId;
+
+  const PickUp1({super.key, required this.orderDocumentId});
+
+  @override
+  State<PickUp1> createState() => _PickUp1State();
+}
+
+class _PickUp1State extends State<PickUp1> {
+  late PickupService _pickupService;
+  Timer? _pollingTimer;
+  Pickup? _currentPickup;
+  String? _error;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    final authProvider = context.read<AuthProvider>();
+    final jwt = authProvider.token;
+
+    if (jwt == null) {
+      setState(() {
+        _error = 'Authentication error: Missing JWT token.';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    _pickupService = PickupService(
+      baseUrl: 'https://mad-shop.onrender.com',
+      jwt: jwt,
+    );
+
+    _initializePickup();
+  }
+
+  Future<void> _initializePickup() async {
+    try {
+      final pickup = await _pickupService.startPickup(widget.orderDocumentId);
+      _startPolling(pickup.documentId);
+      setState(() {
+        _isLoading = false;
+        _currentPickup = pickup;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _startPolling(String pickupDocumentId) {
+    _pollingTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+      try {
+        final status = await _pickupService.getPickupStatus(pickupDocumentId);
+        if (!mounted) return;
+
+        setState(() => _currentPickup = status);
+
+        if (status.progress == 'finished') {
+          timer.cancel();
+          _handleCompletion();
+        }
+      } catch (e) {
+        timer.cancel();
+        if (mounted) {
+          setState(() => _error = 'Polling error: ${e.toString()}');
+        }
+      }
+    });
+  }
+
+  void _handleCompletion() {
+    final allPicked = _currentPickup?.items.every(
+          (item) => item.shipped >= item.required,
+    ) ?? false;
+
+    if (allPicked) {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/order-success');
+      }
+    } else {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: const Text('Partial Pickup'),
+            content: const Text('Some items were not fully picked up'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: const Text('OK'),
+              )
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _pollingTimer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
+    if (_isLoading) return _buildLoading();
+    if (_error != null) return _buildError();
+
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Column(
         children: [
-          // Green Header Section with PNG image
+          // Header Section
           Container(
+            height: 200,
             color: Colors.greenAccent,
-            width: screenWidth,
-            height: screenHeight * 0.32,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.all(20),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.09),
-                // Image row with left alignment
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'assets/MODULAR.png',
-                      height: screenHeight * 0.039,
-                      fit: BoxFit.contain,
-                    ),
-                  ],
+                Image.asset(
+                  'assets/MODULAR.png',
+                  height: 40,
+                  fit: BoxFit.contain,
                 ),
-                SizedBox(height: 12),
-                Text(
-                  'Pick up Your Order',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: screenHeight * 0.032,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 14,
-                      backgroundColor: Colors.white,
-                      child: Text(
-                        '1',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    CircleAvatar(
-                        radius: 7,
-                        backgroundColor: Colors.white.withOpacity(0.5)),
-                    SizedBox(width: 10),
-                    CircleAvatar(
-                        radius: 7,
-                        backgroundColor: Colors.white.withOpacity(0.5)),
-                    SizedBox(width: 10),
-                    CircleAvatar(
-                        radius: 7,
-                        backgroundColor: Colors.white.withOpacity(0.5)),
-                  ],
-                ),
-                SizedBox(height: 15),
-                Text(
-                  'Payment Confirmation',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: screenHeight * 0.02,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
+                const SizedBox(height: 10),
+                LinearProgressIndicator(
+                  value: _currentPickup?.progress == 'started' ? 0.5 : 0.0,
                 ),
               ],
             ),
           ),
 
-          // Content Section
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Are You in Front of this Machine? Kindly Check the Machine code on the machine if it is correct please process now',
-                  style: TextStyle(
-                    fontSize: screenHeight * 0.018,
-                    fontFamily: 'Roboto',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          // Scrollable Content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // QR Code Section
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
                       children: [
-                        Text(
-                          '001',
-                          style: TextStyle(
-                            fontSize: screenHeight * 0.03,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        QrImageView(
+                          data: _currentPickup?.documentId ?? 'Invalid Pickup',
+                          size: screenWidth * 0.7,
+                          errorStateBuilder: (ctx, err) =>
+                              Text('QR Error: $err'),
                         ),
-                        Text(
-                          'Development Lab',
-                          style: TextStyle(
-                            fontSize: screenHeight * 0.02,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          'Location Details',
-                          style: TextStyle(
-                            fontSize: screenHeight * 0.018,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.blue,
-                          ),
+                        const SizedBox(height: 15),
+                        const Text(
+                          'Present QR code to machine scanner',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16),
                         ),
                       ],
                     ),
-                    Image.asset(
-                      'assets/shelf.png',
-                      width: screenWidth * 0.2,
-                      fit: BoxFit.contain,
+                  ),
+
+                  // Status Information
+                  if (_currentPickup != null) ...[
+                    const SizedBox(height: 30),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                            'Pickup Status:',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            _currentPickup!.progress.toUpperCase(),
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 20),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: _currentPickup!.items.length,
+                            separatorBuilder: (_, __) => const Divider(),
+                            itemBuilder: (context, index) {
+                              final item = _currentPickup!.items[index];
+                              return ListTile(
+                                title: Text(item.product),
+                                trailing: Text(
+                                  '${item.shipped}/${item.required}',
+                                  style: TextStyle(
+                                    color: item.shipped >= item.required
+                                        ? Colors.green
+                                        : Colors.orange,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-
-          Spacer(),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                // Updated Elevated Button
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CodeConfirmation()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 19), // Increased padding
-                    minimumSize: Size(double.infinity, 50), // Added minimum size
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                  ),
-                  child: Text(
-                    'It is the Right Machine',
-                    style: TextStyle(
-                      fontSize: screenHeight * 0.022, // Increased text size
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 15), // Increased spacing
-                // Updated Outlined Button
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
-                    padding: EdgeInsets.symmetric(vertical: 19  ), // Increased padding
-                    minimumSize: Size(double.infinity, 50), // Added minimum size
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                  ),
-                  child: Text(
-                    'Cancel this Order',
-                    style: TextStyle(
-                      fontSize: screenHeight * 0.022, // Increased text size
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 25), // Increased bottom spacing
         ],
       ),
     );
   }
+
+  Widget _buildLoading() => const Center(child: CircularProgressIndicator());
+
+  Widget _buildError() => Center(
+    child: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 50, color: Colors.red),
+          const SizedBox(height: 20),
+          Text(
+            _error!,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 16, color: Colors.red),
+          ),
+        ],
+      ),
+    ),
+  );
 }

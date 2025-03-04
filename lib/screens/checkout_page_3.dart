@@ -4,7 +4,7 @@ import '../providers/cart_provider.dart';
 import '../providers/auth_provider.dart';
 import '../services/order_service.dart';
 import '../models/order_model.dart';
-import 'order_success_page.dart';
+import 'order_success_page.dart'; // Keep this import
 
 class CheckOutPage3 extends StatefulWidget {
   @override
@@ -26,7 +26,6 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
     return Scaffold(
       body: Column(
         children: [
-
           Container(
             color: Color(0xFFE31C19),
             width: screenWidth,
@@ -88,7 +87,6 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
             ),
           ),
 
-
           Expanded(
             child: Container(
               color: Colors.white,
@@ -130,9 +128,7 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-
-                            },
+                            onTap: () {},
                             child: Text(
                               "Location Details",
                               style: TextStyle(
@@ -167,7 +163,6 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
                       });
 
                       try {
-
                         final items = cartProvider.items.map((item) {
                           return {
                             'product': item.id.toString(),
@@ -180,40 +175,35 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
                           };
                         }).toList();
 
-                        // Create an Order object
                         final order = Order(
-                          orderStatus: 'UNPAID',
+                          orderStatus: 'PAID',
                           issue: false,
                           items: items,
+                          documentId: '', // Will be populated from response
                         );
 
-
                         final jwt = authProvider.token;
+                        if (jwt == null) throw Exception('User not logged in');
 
-                        if (jwt == null) {
-                          throw Exception('User is not logged in');
-                        }
-
-
-                        await orderService.placeOrder(order: order, jwt: jwt);
-
+                        final response = await orderService.placeOrder(order: order, jwt: jwt);
+                        final createdOrder = Order.fromJson(response['data']);
 
                         cartProvider.clearCart();
 
-
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => OrderSuccessPage()),
+                          MaterialPageRoute(
+                            builder: (context) => OrderSuccessPage(
+                              orderDocumentId: createdOrder.documentId,
+                            ),
+                          ),
                         );
                       } catch (e) {
-                        // Handle errors
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Failed to place order: $e')),
                         );
                       } finally {
-                        setState(() {
-                          _isLoading = false;
-                        });
+                        setState(() => _isLoading = false);
                       }
                     },
                     isLoading: _isLoading,
@@ -223,9 +213,7 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
                     "Buy with other payments",
                     Colors.white,
                     Colors.black,
-                        () {
-
-                    },
+                        () {},
                     isOutlined: true,
                   ),
                   SizedBox(height: screenHeight * 0.0152),
@@ -233,9 +221,7 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
                     "Back",
                     Colors.white,
                     Colors.black,
-                        () {
-                      Navigator.pop(context);
-                    },
+                        () => Navigator.pop(context),
                     isOutlined: true,
                   ),
                 ],
@@ -247,8 +233,8 @@ class _CheckOutPage3State extends State<CheckOutPage3> {
     );
   }
 
-
-  Widget _buildPaymentButton(String text, Color bgColor, Color textColor, VoidCallback onPressed, {bool isOutlined = false, bool isLoading = false}) {
+  Widget _buildPaymentButton(String text, Color bgColor, Color textColor, VoidCallback onPressed,
+      {bool isOutlined = false, bool isLoading = false}) {
     return SizedBox(
       width: double.infinity,
       height: 55,

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
-import 'cart_page.dart';
-import 'vending_machines_page.dart';
-import 'Pick_up_1.dart';
+import 'Pick_up_1.dart'; // Ensure this import path is correct
 
 class OrderSuccessPage extends StatelessWidget {
+  final String orderDocumentId;
+
+  const OrderSuccessPage({super.key, required this.orderDocumentId});
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -40,22 +41,20 @@ class OrderSuccessPage extends StatelessWidget {
                 ),
                 SizedBox(height: 22),
                 Row(
-                  children: [
-                    CircleAvatar(radius: 7, backgroundColor: Colors.black.withOpacity(0.5)),
-                    SizedBox(width: 10),
-                    CircleAvatar(radius: 7, backgroundColor: Colors.black.withOpacity(0.5)),
-                    SizedBox(width: 10),
-                    CircleAvatar(radius: 7, backgroundColor: Colors.black.withOpacity(0.5)),
-                    SizedBox(width: 10),
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.black,
-                      child: Text(
-                        '4',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  children: List.generate(3, (index) => Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: CircleAvatar(radius: 7, backgroundColor: Colors.black.withOpacity(0.5)),
+                  ))
+                    ..add(
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Colors.black,
+                        child: Text(
+                          '4',
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  ],
                 ),
                 SizedBox(height: 19),
                 Text(
@@ -107,12 +106,18 @@ class OrderSuccessPage extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Text(
-                          'Location Details',
-                          style: TextStyle(
-                            fontSize: screenHeight * 0.018,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.blue,
+                        GestureDetector(
+                          onTap: () {
+                            // Add location details logic
+                          },
+                          child: Text(
+                            'Location Details',
+                            style: TextStyle(
+                              fontSize: screenHeight * 0.018,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
                       ],
@@ -131,82 +136,117 @@ class OrderSuccessPage extends StatelessWidget {
           // Spacer
           Spacer(),
 
-          // Payment Buttons
+          // Action Buttons
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PickUp1()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Pick up now',
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.023,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                _buildButton(
+                  text: 'Pick up now',
+                  bgColor: Colors.black,
+                  textColor: Colors.white,
+                  onPressed: () => _handlePickupNow(context),
                 ),
                 SizedBox(height: 10),
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Cancel this order',
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.023,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                _buildButton(
+                  text: 'Cancel this order',
+                  bgColor: Colors.white,
+                  textColor: Colors.black,
+                  border: BorderSide(color: Colors.black),
+                  onPressed: () => _handleCancelOrder(context),
                 ),
                 SizedBox(height: 10),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Close',
-                      style: TextStyle(
-                        fontSize: screenHeight * 0.023,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                _buildButton(
+                  text: 'Close',
+                  bgColor: Colors.white,
+                  textColor: Colors.black,
+                  border: BorderSide(color: Colors.black),
+                  onPressed: () => Navigator.pop(context),
                 ),
               ],
             ),
           ),
           SizedBox(height: 20),
         ],
+      ),
+    );
+  }
+
+  void _handlePickupNow(BuildContext context) {
+    try {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PickUp1(orderDocumentId: orderDocumentId),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to start pickup: ${e.toString()}')),
+      );
+    }
+  }
+
+  void _handleCancelOrder(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Confirm Cancellation'),
+        content: Text('Are you sure you want to cancel this order?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Add actual cancellation logic here
+              Navigator.pop(ctx);
+              Navigator.pop(context);
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButton({
+    required String text,
+    required Color bgColor,
+    required Color textColor,
+    VoidCallback? onPressed,
+    BorderSide? border,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: border == null
+          ? ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: bgColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22),
+          ),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 18, color: textColor),
+        ),
+      )
+          : OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          side: border,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22),
+          ),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 18, color: textColor),
+        ),
       ),
     );
   }
