@@ -88,7 +88,7 @@ class _PickUp1State extends State<PickUp1> {
 
     if (allPicked) {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/order-success');
+        Navigator.pushReplacementNamed(context, '/code-confirmation-4');
       }
     } else {
       if (mounted) {

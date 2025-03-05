@@ -5,6 +5,7 @@ import 'providers/auth_provider.dart';
 import 'services/order_service.dart';
 import 'screens/splash_screen.dart';
 import 'screens/second_page.dart';
+import 'screens/code_confirmation_4.dart';  // Import your screen
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         home: SplashScreen(),
         routes: {
           '/second': (context) => SecondPage(),
+          '/code-confirmation-4': (context) => CodeConfirmation4(), // Add this route
         },
       ),
     );
